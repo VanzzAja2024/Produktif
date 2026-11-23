@@ -1,0 +1,2578 @@
+<!DOCTYPE html>
+<html lang="id" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PPLG1 GRIND OS — Ziyan | ASAS & 30-Day Workout Tracker</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: Inter & JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;700;800&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+            mono: ['JetBrains Mono', 'monospace'],
+          },
+          animation: {
+            'shake': 'shake 0.55s cubic-bezier(.36,.07,.19,.97) both',
+            'float-up': 'floatUp 0.7s ease-out forwards',
+          },
+          keyframes: {
+            shake: {
+              '10%, 90%': { transform: 'translate3d(-2px, 0, 0)' },
+              '20%, 80%': { transform: 'translate3d(4px, 0, 0)' },
+              '30%, 50%, 70%': { transform: 'translate3d(-6px, 0, 0)' },
+              '40%, 60%': { transform: 'translate3d(6px, 0, 0)' }
+            },
+            floatUp: {
+              '0%': { opacity: '1', transform: 'translateY(0)' },
+              '100%': { opacity: '0', transform: 'translateY(-24px)' }
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Cyber Productivity Dark Theme Styling */
+    body {
+      background-color: #020617;
+      color: #f8fafc;
+      background-image:
+        radial-gradient(circle at 10% 8%, rgba(99, 102, 241, 0.14) 0%, transparent 36%),
+        radial-gradient(circle at 90% 12%, rgba(16, 185, 129, 0.11) 0%, transparent 36%),
+        radial-gradient(circle at 50% 95%, rgba(6, 182, 212, 0.08) 0%, transparent 40%);
+      min-height: 100vh;
+    }
+
+    .tabular-nums {
+      font-variant-numeric: tabular-nums;
+    }
+
+    .glass-card {
+      background: rgba(15, 23, 42, 0.80);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(51, 65, 85, 0.65);
+    }
+
+    .cyber-grid-bg {
+      background-size: 28px 28px;
+      background-image:
+        linear-gradient(to right, rgba(99, 102, 241, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(99, 102, 241, 0.06) 1px, transparent 1px);
+    }
+
+    @keyframes edgeFlash {
+      0%, 100% { box-shadow: inset 0 0 0px rgba(244, 63, 94, 0); }
+      50% { box-shadow: inset 0 0 55px rgba(244, 63, 94, 0.5); }
+    }
+    .urgent-screen-flash {
+      animation: edgeFlash 1s ease-in-out 2;
+    }
+
+    /* Hide scrollbar for horizontal tab pills on small mobile */
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
+    }
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+  </style>
+</head>
+<body class="antialiased selection:bg-indigo-500/30 selection:text-indigo-200 pb-20 cyber-grid-bg">
+
+  <!-- Screen Edge Urgent Flash Overlay -->
+  <div id="screen-flash-overlay" class="fixed inset-0 pointer-events-none z-50"></div>
+
+  <!-- Floating Toast Container -->
+  <div id="toast-container" class="fixed bottom-4 right-4 left-4 sm:left-auto sm:w-96 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+  <!-- MAIN CONTAINER -->
+  <div class="max-w-7xl mx-auto px-3.5 sm:px-6 lg:px-8 pt-4 sm:pt-6 space-y-5">
+
+    <!-- =====================================================================
+         1. HEADER REAL-TIME & MESIN NOTIFIKASI TERUS-TERUSAN (NAGGING ENGINE)
+         ===================================================================== -->
+    <header class="glass-card rounded-2xl p-4 sm:p-5 shadow-2xl border-slate-800/90">
+      <div class="flex flex-col xl:flex-row xl:items-center xl:justify-between gap-4">
+
+        <!-- Identity & Live Clock -->
+        <div class="flex items-start sm:items-center gap-3.5">
+          <div class="w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-gradient-to-br from-indigo-500 via-cyan-400 to-emerald-500 p-[1.5px] shrink-0 shadow-lg shadow-indigo-500/25">
+            <div class="w-full h-full bg-slate-950 rounded-[14px] flex flex-col items-center justify-center">
+              <span class="font-mono text-[10px] font-extrabold text-cyan-400 leading-none">X-PPLG</span>
+              <span class="font-mono text-base font-black text-white leading-tight">01</span>
+            </div>
+          </div>
+
+          <div class="min-w-0">
+            <div class="flex flex-wrap items-center gap-2">
+              <h1 class="text-base sm:text-xl font-black tracking-tight text-white">
+                PPLG1 GRIND OS
+              </h1>
+              <span class="px-2 py-0.5 rounded-md text-[11px] font-mono font-bold bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">
+                USER: ZIYAN
+              </span>
+              <span id="header-rank-pill" class="px-2.5 py-0.5 rounded-full text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/35">
+                Lv.1 Rookie Coder • 0 XP
+              </span>
+            </div>
+
+            <!-- Real-Time Date & WIB Clock -->
+            <div class="mt-1.5 flex flex-wrap items-center gap-x-3 gap-y-1 text-xs sm:text-sm">
+              <span id="live-date-display" class="inline-flex items-center gap-1.5 font-medium text-slate-300">
+                <i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-400"></i>
+                Memuat tanggal...
+              </span>
+              <span class="hidden sm:inline text-slate-700">|</span>
+              <span id="live-clock-display" class="font-mono font-extrabold text-emerald-400 tabular-nums tracking-wider">
+                --:--:-- WIB
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alarm & Notification Action Controls -->
+        <div class="flex flex-wrap items-center gap-2">
+          <button id="btn-enable-notif" onclick="requestNotificationAndAudio()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-indigo-600 hover:bg-indigo-500 active:scale-[0.98] text-white transition shadow-lg shadow-indigo-600/25 cursor-pointer">
+            <i data-lucide="bell-ring" class="w-4 h-4"></i>
+            <span id="btn-notif-label">Aktifkan Notifikasi & Suara</span>
+          </button>
+
+          <button onclick="triggerTestAlarm()" class="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold bg-slate-800/90 hover:bg-slate-700 active:scale-[0.98] text-amber-300 border border-slate-700 transition cursor-pointer">
+            <i data-lucide="volume-2" class="w-4 h-4"></i>
+            <span>Test Alarm</span>
+          </button>
+
+          <button id="btn-toggle-mute" onclick="toggleSoundMute()" class="inline-flex items-center justify-center gap-1.5 px-3 py-2.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-xs font-bold transition cursor-pointer" title="Mute / Unmute Suara Alarm">
+            <i id="icon-mute-state" data-lucide="volume-x" class="w-4 h-4 hidden text-rose-400"></i>
+            <i id="icon-unmute-state" data-lucide="volume-1" class="w-4 h-4 text-emerald-400"></i>
+            <span id="label-mute-state" class="hidden sm:inline">Suara ON</span>
+          </button>
+        </div>
+
+      </div>
+    </header>
+
+    <!-- PERSISTENT NAGGING ALARM ENGINE BANNER -->
+    <section id="nagging-banner" class="rounded-2xl p-4 sm:p-5 border transition-all duration-300 bg-rose-950/45 border-rose-500/60 shadow-lg shadow-rose-950/40">
+      <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+
+        <!-- Left Urgent Alert Status -->
+        <div class="flex items-start gap-3.5">
+          <div id="nag-icon-box" class="p-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-400 shrink-0 mt-0.5">
+            <i data-lucide="siren" class="w-6 h-6 animate-bounce"></i>
+          </div>
+          <div class="space-y-1">
+            <div class="flex flex-wrap items-center gap-2">
+              <h2 id="nag-title" class="text-sm sm:text-lg font-extrabold text-rose-200 tracking-tight">
+                ⚠️ PERINGATAN ZIYAN: BELUM ADA SATUPUN TUGAS SELESAI HARI INI!
+              </h2>
+              <span id="nag-progress-badge" class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-500/25 text-rose-200 border border-rose-500/35">
+                0 / 13 Selesai
+              </span>
+            </div>
+            <p id="nag-subtitle" class="text-xs sm:text-sm text-rose-200/85 leading-relaxed">
+              Mesin pengingat akan terus berbunyi dan memunculkan pop-up sampai minimal <strong class="text-white underline">1 tugas belajar ASAS atau gerakan Workout</strong> kamu centang hari ini!
+            </p>
+            <div id="nag-countdown-row" class="pt-1 flex flex-wrap items-center gap-2.5 text-xs">
+              <span class="inline-flex items-center gap-1.5 font-mono font-bold px-2.5 py-1 rounded-lg bg-slate-950/90 text-amber-300 border border-amber-500/35">
+                <i data-lucide="timer" class="w-3.5 h-3.5 text-amber-400"></i>
+                Alarm berikutnya dalam: <span id="nag-next-timer" class="tabular-nums text-white">01:00</span>
+              </span>
+              <span id="browser-perm-status" class="text-slate-300">
+                Notifikasi Browser: <strong class="text-amber-300">Klik "Aktifkan" di atas</strong>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Nagging Interval & Strictness Selectors -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 shrink-0 bg-slate-950/60 p-3 rounded-xl border border-slate-800">
+          <div class="flex flex-col gap-1">
+            <label for="nag-interval-select" class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Interval Alarm Terus-Terusan
+            </label>
+            <select id="nag-interval-select" onchange="updateNagSettings()" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs font-semibold rounded-lg px-2.5 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer">
+              <option value="15">Setiap 15 Detik (Uji Cepat)</option>
+              <option value="60" selected>Setiap 1 Menit (Tegas)</option>
+              <option value="300">Setiap 5 Menit (Normal)</option>
+              <option value="900">Setiap 15 Menit (Santai)</option>
+            </select>
+          </div>
+
+          <div class="flex flex-col gap-1">
+            <label for="nag-mode-select" class="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+              Syarat Alarm Berhenti
+            </label>
+            <select id="nag-mode-select" onchange="updateNagSettings()" class="bg-slate-900 border border-slate-700 text-slate-100 text-xs font-semibold rounded-lg px-2.5 py-2 focus:outline-none focus:border-indigo-500 cursor-pointer">
+              <option value="standard" selected>Mode Standar (Min. 1 Tugas)</option>
+              <option value="brutal">Mode Brutal (SEMUA Tugas)</option>
+            </select>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         MAIN NAVIGATION TABS (4 VIEWS)
+         ===================================================================== -->
+    <nav class="glass-card rounded-2xl p-1.5 flex items-center gap-1.5 overflow-x-auto no-scrollbar sticky top-2 z-30 shadow-xl">
+      <button onclick="switchMainTab('dashboard')" id="nav-tab-dashboard" class="flex-1 min-w-[135px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 cursor-pointer">
+        <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i>
+        <span>Dashboard Utama</span>
+      </button>
+
+      <button onclick="switchMainTab('asas')" id="nav-tab-asas" class="flex-1 min-w-[155px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer">
+        <i data-lucide="book-open-check" class="w-4 h-4 shrink-0"></i>
+        <span>Jadwal & Belajar ASAS</span>
+      </button>
+
+      <button onclick="switchMainTab('workout')" id="nav-tab-workout" class="flex-1 min-w-[165px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer">
+        <i data-lucide="dumbbell" class="w-4 h-4 shrink-0"></i>
+        <span>Program Workout 30 Hari</span>
+      </button>
+
+      <button onclick="switchMainTab('minigame')" id="nav-tab-minigame" class="flex-1 min-w-[140px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer">
+        <i data-lucide="gamepad-2" class="w-4 h-4 shrink-0"></i>
+        <span>Mini-Game Zone</span>
+      </button>
+    </nav>
+
+    <!-- =====================================================================
+         TAB 1: DASHBOARD UTAMA
+         ===================================================================== -->
+    <main id="view-dashboard" class="space-y-5">
+
+      <!-- Dual Real-Time Countdown Cards -->
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+
+        <!-- COUNTDOWN CARD 1: TARGET PERSIAPAN ASAS X PPLG 1 -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-40 h-40 bg-indigo-500/10 rounded-full blur-3xl -mr-12 -mt-12 pointer-events-none"></div>
+
+          <div>
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/30">
+                  <i data-lucide="graduation-cap" class="w-3.5 h-3.5"></i>
+                  TARGET 1 • UJIAN SEKOLAH
+                </span>
+                <h2 class="mt-2 text-lg sm:text-xl font-extrabold text-white">
+                  Target Persiapan ASAS X PPLG 1
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">
+                  Hari Pertama Ujian: <span id="asas-target-label" class="text-indigo-300 font-semibold">Senin, 7 Des 2026 • 07:00 WIB</span>
+                </p>
+              </div>
+
+              <button onclick="toggleAsasDateEditor()" class="p-2 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-300 border border-slate-700 text-xs flex items-center gap-1.5 transition cursor-pointer" title="Ubah Tanggal Target ASAS">
+                <i data-lucide="calendar-cog" class="w-4 h-4 text-indigo-400"></i>
+                <span class="hidden sm:inline">Ubah</span>
+              </button>
+            </div>
+
+            <!-- Inline Date Editor -->
+            <div id="asas-date-editor" class="hidden mt-3 p-3 rounded-xl bg-slate-950/90 border border-indigo-500/35 flex flex-wrap items-center gap-2">
+              <label class="text-xs text-slate-300 font-medium">Waktu ASAS:</label>
+              <input type="datetime-local" id="asas-date-input" class="bg-slate-900 border border-slate-700 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-indigo-500" />
+              <button onclick="saveAsasTargetDate()" class="px-3 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white cursor-pointer">
+                Simpan
+              </button>
+            </div>
+
+            <!-- 4-Box Real-Time Countdown -->
+            <div class="grid grid-cols-4 gap-2.5 my-5">
+              <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-center">
+                <div id="asas-cd-days" class="font-mono text-2xl sm:text-3xl font-black text-indigo-400 tabular-nums">00</div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Hari</div>
+              </div>
+              <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-center">
+                <div id="asas-cd-hours" class="font-mono text-2xl sm:text-3xl font-black text-white tabular-nums">00</div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Jam</div>
+              </div>
+              <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-center">
+                <div id="asas-cd-mins" class="font-mono text-2xl sm:text-3xl font-black text-white tabular-nums">00</div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Menit</div>
+              </div>
+              <div class="bg-slate-950/90 border border-slate-800 rounded-xl p-3 text-center">
+                <div id="asas-cd-secs" class="font-mono text-2xl sm:text-3xl font-black text-amber-400 tabular-nums">00</div>
+                <div class="text-[10px] font-bold uppercase tracking-wider text-slate-400 mt-1">Detik</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-2 border-t border-slate-800/80">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Progress Timeline Menuju ASAS</span>
+              <span id="asas-timeline-pct" class="font-mono font-bold text-indigo-300">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="asas-timeline-bar" class="h-full bg-gradient-to-r from-indigo-500 via-purple-500 to-cyan-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center text-xs pt-1">
+              <span class="text-slate-400">Target Belajar Hari Ini:</span>
+              <button onclick="switchMainTab('asas')" class="font-bold text-indigo-300 hover:text-indigo-200 underline cursor-pointer">
+                <span id="dash-asas-stat">0 / 4 Selesai</span> →
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- COUNTDOWN CARD 2: TARGET WORKOUT 1 BULAN (30 HARI) -->
+        <div class="glass-card rounded-2xl p-5 flex flex-col justify-between relative overflow-hidden">
+          <div class="absolute top-0 right-0 w-40 h-40 bg-emerald-500/10 rounded-full blur-3xl -mr-12 -mt-12 pointer-events-none"></div>
+
+          <div>
+            <div class="flex items-start justify-between gap-3">
+              <div>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-lg text-[11px] font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">
+                  <i data-lucide="flame" class="w-3.5 h-3.5"></i>
+                  TARGET 2 • 30-DAY FITNESS
+                </span>
+                <h2 class="mt-2 text-lg sm:text-xl font-extrabold text-white">
+                  Target Workout 1 Bulan (30 Hari)
+                </h2>
+                <p class="text-xs text-slate-400 mt-0.5">
+                  Streak Aktif: <span id="workout-streak-count" class="text-emerald-400 font-bold">0 / 30 Hari</span>
+                </p>
+              </div>
+
+              <div class="text-right shrink-0 bg-slate-950/90 px-3 py-2 rounded-xl border border-slate-800">
+                <div class="text-[10px] uppercase tracking-wider text-slate-400 font-bold">Sisa Waktu 30 Hari</div>
+                <div id="workout-mini-cd" class="font-mono text-xs sm:text-sm font-extrabold text-emerald-400 tabular-nums mt-0.5">
+                  30h 00j 00m 00d
+                </div>
+              </div>
+            </div>
+
+            <!-- Interactive 30-Day Streak Grid -->
+            <div class="mt-4">
+              <div class="flex items-center justify-between text-xs mb-2">
+                <span class="text-slate-300 font-semibold">Kalender Streak 30 Hari (Klik manual / otomatis saat latihan)</span>
+                <span class="text-[11px] text-slate-400 flex items-center gap-2">
+                  <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm bg-emerald-500 inline-block"></span> Done</span>
+                  <span class="inline-flex items-center gap-1"><span class="w-2.5 h-2.5 rounded-sm border border-amber-400 inline-block"></span> Hari Ini</span>
+                </span>
+              </div>
+              <div id="workout-30day-grid" class="grid grid-cols-10 gap-1.5">
+                <!-- Populated by JS -->
+              </div>
+            </div>
+          </div>
+
+          <div class="space-y-2 pt-3 mt-3 border-t border-slate-800/80">
+            <div class="flex justify-between items-center text-xs">
+              <span class="text-slate-400">Progres Challenge 1 Bulan</span>
+              <span id="workout-month-pct" class="font-mono font-bold text-emerald-400">0%</span>
+            </div>
+            <div class="w-full h-2.5 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="workout-month-bar" class="h-full bg-gradient-to-r from-emerald-500 to-teal-400 rounded-full transition-all duration-500" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center text-xs pt-1">
+              <span class="text-slate-400">Gerakan Workout Hari Ini:</span>
+              <button onclick="switchMainTab('workout')" class="font-bold text-emerald-300 hover:text-emerald-200 underline cursor-pointer">
+                <span id="dash-workout-stat">0 / 9 Selesai</span> →
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+      <!-- RINGKASAN PROGRES HARIAN, XP & RANK LEVEL -->
+      <section class="glass-card rounded-2xl p-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-5">
+          <div class="space-y-2 flex-1">
+            <div class="flex flex-wrap items-center justify-between gap-2">
+              <div class="flex items-center gap-2">
+                <i data-lucide="trophy" class="w-5 h-5 text-amber-400"></i>
+                <h3 class="text-base font-extrabold text-white">Status Rank & Progres Harian Ziyan</h3>
+              </div>
+              <span id="rank-xp-detail" class="font-mono text-xs font-bold text-cyan-300">
+                0 XP • Menuju Lv.2 Logic Sprinter (300 XP)
+              </span>
+            </div>
+
+            <!-- XP Bar -->
+            <div class="w-full h-3 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="xp-progress-bar" class="h-full bg-gradient-to-r from-indigo-500 via-cyan-400 to-emerald-400 transition-all duration-500" style="width: 0%"></div>
+            </div>
+
+            <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5 pt-2">
+              <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3">
+                <div class="text-[11px] text-slate-400">Progres Hari Ini</div>
+                <div id="dash-total-pct" class="font-mono text-lg font-extrabold text-white mt-0.5">0%</div>
+              </div>
+              <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3">
+                <div class="text-[11px] text-slate-400">Belajar ASAS</div>
+                <div id="dash-asas-box" class="font-mono text-lg font-extrabold text-indigo-400 mt-0.5">0/4</div>
+              </div>
+              <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3">
+                <div class="text-[11px] text-slate-400">Workout Harian</div>
+                <div id="dash-workout-box" class="font-mono text-lg font-extrabold text-emerald-400 mt-0.5">0/9</div>
+              </div>
+              <div class="bg-slate-950/80 border border-slate-800 rounded-xl p-3">
+                <div class="text-[11px] text-slate-400">Rekor Mini-Game</div>
+                <div id="dash-game-box" class="font-mono text-lg font-extrabold text-amber-400 mt-0.5">0 pts</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Action Shortcuts -->
+          <div class="flex flex-col sm:flex-row lg:flex-col gap-2 shrink-0">
+            <button onclick="switchMainTab('asas')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-indigo-600/20 hover:bg-indigo-600/35 text-indigo-200 border border-indigo-500/40 transition cursor-pointer">
+              <i data-lucide="book-open" class="w-4 h-4"></i>
+              <span>Buka Jadwal & Checklist ASAS</span>
+            </button>
+            <button onclick="switchMainTab('workout')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-200 border border-emerald-500/40 transition cursor-pointer">
+              <i data-lucide="play-circle" class="w-4 h-4"></i>
+              <span>Mulai Workout Hari Ini</span>
+            </button>
+            <button onclick="switchMainTab('minigame')" class="inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-xs font-bold bg-amber-500/20 hover:bg-amber-500/35 text-amber-200 border border-amber-500/40 transition cursor-pointer">
+              <i data-lucide="gamepad-2" class="w-4 h-4"></i>
+              <span>Main Mini-Game (+XP)</span>
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <!-- QUICK PREVIEW: TODAY'S PRIORITY TASKS -->
+      <section class="grid grid-cols-1 lg:grid-cols-2 gap-5">
+        <div class="glass-card rounded-2xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
+              <i data-lucide="check-square" class="w-4 h-4 text-indigo-400"></i>
+              Checklist Belajar ASAS Hari Ini
+            </h3>
+            <button onclick="switchMainTab('asas')" class="text-xs font-semibold text-indigo-400 hover:text-indigo-300 cursor-pointer">Lihat Semua →</button>
+          </div>
+          <div id="dash-quick-asas-list" class="space-y-2"></div>
+        </div>
+
+        <div class="glass-card rounded-2xl p-5 space-y-3">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm sm:text-base font-extrabold text-white flex items-center gap-2">
+              <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+              Checklist Workout Hari Ini (<span id="dash-week-label" class="text-emerald-400">Minggu 1</span>)
+            </h3>
+            <button onclick="switchMainTab('workout')" class="text-xs font-semibold text-emerald-400 hover:text-emerald-300 cursor-pointer">Buka Timer Gerakan →</button>
+          </div>
+          <div id="dash-quick-workout-list" class="space-y-2"></div>
+        </div>
+      </section>
+
+    </main>
+
+    <!-- =====================================================================
+         TAB 2: JADWAL RESMI ASAS X PPLG 1 & ROADMAP BELAJAR
+         ===================================================================== -->
+    <section id="view-asas" class="hidden space-y-6">
+
+      <!-- Official ASAS Schedule Header & Table -->
+      <div class="glass-card rounded-2xl p-5 space-y-4">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/35">
+              DOKUMEN RESMI • KELAS X PPLG 1
+            </span>
+            <h2 class="mt-1.5 text-lg sm:text-xl font-extrabold text-white">
+              Jadwal Asesmen Sumatif Akhir Semester (ASAS) Ganjil 2026/2027
+            </h2>
+            <p class="text-xs text-slate-400">
+              SMK Negeri Situraja • Mulai Senin, 7 Desember 2026 s.d. Jum'at, 11 Desember 2026
+            </p>
+          </div>
+
+          <!-- Pomodoro Study Timer 25m -->
+          <div class="bg-slate-950/90 border border-indigo-500/35 rounded-xl p-3 flex items-center gap-3 shrink-0">
+            <div>
+              <div class="text-[10px] font-bold uppercase tracking-wider text-indigo-400">Timer Belajar ASAS</div>
+              <div id="pomodoro-display" class="font-mono text-2xl font-black text-white tabular-nums">25:00</div>
+            </div>
+            <div class="flex items-center gap-1.5">
+              <button id="btn-pomo-toggle" onclick="togglePomodoroTimer()" class="px-3 py-2 rounded-lg bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white cursor-pointer">
+                Mulai
+              </button>
+              <button onclick="resetPomodoroTimer()" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 cursor-pointer" title="Reset 25 Menit">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5-Day Official Schedule Cards Grid -->
+        <div id="official-asas-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-5 gap-3.5">
+          <!-- Populated dynamically with exact schedule data -->
+        </div>
+      </div>
+
+      <!-- Daily Preparation Checklist + 14-Day Roadmap -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-5">
+
+        <!-- Left 7 Cols: Interactive Study Checklist -->
+        <div class="lg:col-span-7 glass-card rounded-2xl p-5 flex flex-col justify-between space-y-4">
+          <div class="space-y-4">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <div>
+                <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                  <i data-lucide="list-checks" class="w-5 h-5 text-indigo-400"></i>
+                  Checklist Persiapan Belajar ASAS Hari Ini
+                </h3>
+                <p class="text-xs text-slate-400">Centang untuk mendapatkan +50 XP & menghentikan alarm pengingat</p>
+              </div>
+              <span id="asas-tab-badge" class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
+                0/4
+              </span>
+            </div>
+
+            <div id="full-asas-task-list" class="space-y-2.5">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+
+          <!-- Add Custom Study Task Form -->
+          <form onsubmit="handleAddAsasTask(event)" class="pt-3 border-t border-slate-800 flex flex-col sm:flex-row gap-2">
+            <input type="text" id="new-asas-time" placeholder="19:30" value="20:30" required class="w-full sm:w-24 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs font-mono text-white focus:outline-none focus:border-indigo-500" />
+            <input type="text" id="new-asas-title" placeholder="Tambah target belajar mapel (misal: Koding & KA / Sunda)..." required class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-indigo-500" />
+            <select id="new-asas-subject" class="bg-slate-950 border border-slate-700 rounded-xl px-2.5 py-2 text-xs text-slate-200 focus:outline-none focus:border-indigo-500">
+              <option value="Hari 1 • B. Sunda">Hari 1 • B. Sunda</option>
+              <option value="Hari 1 • Sejarah">Hari 1 • Sejarah</option>
+              <option value="Hari 1 • Matematika">Hari 1 • Matematika</option>
+              <option value="Hari 2 • Koding & KA">Hari 2 • Koding & KA</option>
+              <option value="Hari 2 • Dasar PPLG">Hari 2 • Dasar PPLG</option>
+              <option value="Hari 2 • B. Inggris">Hari 2 • B. Inggris</option>
+              <option value="Hari 3 • IPAS & PPKn">Hari 3 • IPAS & PPKn</option>
+              <option value="Hari 4-5 • Informatika & Umum">Hari 4-5 • Informatika</option>
+            </select>
+            <button type="submit" class="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs font-bold text-white cursor-pointer shrink-0">
+              <i data-lucide="plus" class="w-4 h-4"></i>
+              <span>Tambah</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Right 5 Cols: 14-Day Strategic Roadmap (23 Nov - 6 Des 2026) -->
+        <div class="lg:col-span-5 glass-card rounded-2xl p-5 space-y-3">
+          <div class="border-b border-slate-800 pb-3">
+            <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+              <i data-lucide="map" class="w-5 h-5 text-cyan-400"></i>
+              Roadmap Belajar H-14 s.d. H-1 ASAS
+            </h3>
+            <p class="text-xs text-slate-400">Strategi prioritas berdasarkan urutan hari ujian X PPLG 1</p>
+          </div>
+
+          <div id="asas-roadmap-list" class="space-y-2.5 max-h-[460px] overflow-y-auto pr-1">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- =====================================================================
+         TAB 3: PROGRAM WORKOUT 1 BULAN (DAFTAR GERAKAN LENGKAP & TIMER)
+         ===================================================================== -->
+    <section id="view-workout" class="hidden space-y-5">
+
+      <!-- Top Workout Control Bar & Active Movement Timer -->
+      <div class="glass-card rounded-2xl p-5">
+        <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+          <div>
+            <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/35">
+              NO-EQUIPMENT HOME WORKOUT • 30 DAYS
+            </span>
+            <h2 class="mt-1.5 text-lg sm:text-xl font-extrabold text-white">
+              Program Workout 1 Bulan — Daftar Gerakan Wajib
+            </h2>
+            <p class="text-xs text-slate-400 mt-0.5">
+              Pilih level minggu untuk menyesuaikan intensitas repetisi & durasi, lalu jalankan timer per gerakan.
+            </p>
+          </div>
+
+          <!-- Active Exercise Countdown Timer Box -->
+          <div class="bg-slate-950/95 border border-emerald-500/40 rounded-2xl p-3.5 flex flex-wrap items-center gap-3.5 shrink-0">
+            <div>
+              <div class="flex items-center gap-1.5">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                <span id="ex-timer-name" class="text-xs font-bold text-emerald-300">Jumping Jacks</span>
+              </div>
+              <div id="ex-timer-clock" class="font-mono text-3xl font-black text-white tabular-nums mt-0.5">
+                00:45
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <button id="btn-ex-timer-toggle" onclick="toggleExerciseTimer()" class="inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs font-bold text-white cursor-pointer">
+                <i data-lucide="play" class="w-4 h-4"></i>
+                <span id="ex-timer-btn-text">Mulai</span>
+              </button>
+              <button onclick="resetExerciseTimer()" class="p-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 cursor-pointer" title="Reset Timer Gerakan">
+                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Week Level Selector Pills (Minggu 1 - Minggu 4) -->
+        <div class="grid grid-cols-2 lg:grid-cols-4 gap-2.5 mt-4 pt-4 border-t border-slate-800">
+          <button onclick="selectWorkoutWeek(1)" id="wk-btn-1" class="p-3 rounded-xl border text-left transition cursor-pointer bg-emerald-500/15 border-emerald-500 text-white">
+            <div class="text-xs font-extrabold text-emerald-300">Minggu 1 (Hari 1–7)</div>
+            <div class="text-[11px] text-slate-300 mt-0.5">Fondasi & Adaptasi Tubuh</div>
+          </button>
+          <button onclick="selectWorkoutWeek(2)" id="wk-btn-2" class="p-3 rounded-xl border text-left transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-700">
+            <div class="text-xs font-extrabold text-slate-200">Minggu 2 (Hari 8–14)</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Stamina & Ketahanan Core</div>
+          </button>
+          <button onclick="selectWorkoutWeek(3)" id="wk-btn-3" class="p-3 rounded-xl border text-left transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-700">
+            <div class="text-xs font-extrabold text-slate-200">Minggu 3 (Hari 15–21)</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Kekuatan & Intensitas Tinggi</div>
+          </button>
+          <button onclick="selectWorkoutWeek(4)" id="wk-btn-4" class="p-3 rounded-xl border text-left transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-700">
+            <div class="text-xs font-extrabold text-slate-200">Minggu 4 (Hari 22–30)</div>
+            <div class="text-[11px] text-slate-400 mt-0.5">Peak Limit & Definisi Otot</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Categorized Workout Movements List (Pemanasan, Latihan Inti, Pendinginan) -->
+      <div id="workout-sections-container" class="space-y-5">
+        <!-- Populated dynamically via JS -->
+      </div>
+
+    </section>
+
+    <!-- =====================================================================
+         TAB 4: MINI-GAME ZONE (2 MINI-GAMES INTERAKTIF)
+         ===================================================================== -->
+    <section id="view-minigame" class="hidden space-y-5">
+
+      <!-- Mini-Game Selector Header -->
+      <div class="glass-card rounded-2xl p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-md text-[11px] font-bold bg-amber-500/20 text-amber-300 border border-amber-500/35">
+            REFRESHING & BRAIN TRAINING • +XP BONUS
+          </span>
+          <h2 class="mt-1.5 text-lg sm:text-xl font-extrabold text-white">
+            Mini-Game Zone — Asah Otak ASAS & Refleks Coder
+          </h2>
+          <p class="text-xs text-slate-400">
+            Istirahat sejenak setelah belajar atau workout sambil mengumpulkan XP tambahan!
+          </p>
+        </div>
+
+        <div class="flex bg-slate-950 p-1 rounded-xl border border-slate-800 shrink-0">
+          <button onclick="switchGameSubTab('quiz')" id="subtab-game-quiz" class="px-3.5 py-2 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer">
+            1. Brain Battle Quiz
+          </button>
+          <button onclick="switchGameSubTab('smasher')" id="subtab-game-smasher" class="px-3.5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer">
+            2. Bug Smasher Arcade
+          </button>
+        </div>
+      </div>
+
+      <!-- MINI-GAME 1: ASAS X PPLG 1: BRAIN BATTLE QUIZ -->
+      <div id="game-panel-quiz" class="glass-card rounded-2xl p-5 sm:p-6 space-y-5">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+              <i data-lucide="brain-circuit" class="w-5 h-5 text-indigo-400"></i>
+              ASAS X PPLG 1: Brain Battle Quiz
+            </h3>
+            <p class="text-xs text-slate-400">Jawab soal mapel ASAS dalam 15 detik! Bangun Combo untuk skor berlipat.</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs">
+              <span class="text-slate-400">High Score:</span>
+              <span id="quiz-high-score" class="font-mono font-extrabold text-amber-400 ml-1">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quiz Start Screen -->
+        <div id="quiz-start-screen" class="text-center py-8 space-y-4">
+          <div class="w-16 h-16 rounded-2xl bg-indigo-500/20 border border-indigo-500/40 text-indigo-300 flex items-center justify-center mx-auto">
+            <i data-lucide="zap" class="w-8 h-8"></i>
+          </div>
+          <div class="max-w-md mx-auto space-y-1.5">
+            <h4 class="text-lg font-extrabold text-white">Siap Uji Materi ASAS X PPLG 1?</h4>
+            <p class="text-xs text-slate-400 leading-relaxed">
+              Soal mencakup <strong>Koding & Kecerdasan Artifisial, Dasar PPLG, Matematika, Bahasa Inggris, Bahasa Sunda, Sejarah, IPAS, & Informatika</strong>. Kamu punya 3 nyawa dan 15 detik per soal!
+            </p>
+          </div>
+          <button onclick="startQuizGame()" class="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-sm font-extrabold text-white shadow-lg shadow-indigo-600/30 transition cursor-pointer">
+            <i data-lucide="play" class="w-4 h-4"></i>
+            <span>Mulai Brain Battle!</span>
+          </button>
+        </div>
+
+        <!-- Quiz Active Gameplay Screen -->
+        <div id="quiz-play-screen" class="hidden space-y-4">
+          <!-- HUD -->
+          <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950/90 p-3 rounded-xl border border-slate-800">
+            <div class="flex items-center gap-3">
+              <span id="quiz-lives-display" class="text-base tracking-widest">❤️❤️❤️</span>
+              <span id="quiz-combo-badge" class="px-2.5 py-0.5 rounded-md text-xs font-mono font-bold bg-amber-500/20 text-amber-300 border border-amber-500/30">
+                Combo x1
+              </span>
+            </div>
+            <div class="flex items-center gap-4">
+              <span class="text-xs text-slate-400">Soal <strong id="quiz-q-num" class="text-white">1</strong>/10</span>
+              <span class="font-mono text-sm font-extrabold text-emerald-400">Skor: <span id="quiz-score-display">0</span></span>
+            </div>
+          </div>
+
+          <!-- 15s Timer Bar -->
+          <div class="space-y-1">
+            <div class="flex justify-between text-xs">
+              <span id="quiz-subject-tag" class="font-bold text-cyan-400">Koding & Kecerdasan Artifisial</span>
+              <span class="font-mono font-bold text-amber-300"><span id="quiz-timer-sec">15</span>s</span>
+            </div>
+            <div class="w-full h-2 bg-slate-950 rounded-full overflow-hidden border border-slate-800">
+              <div id="quiz-timer-bar" class="h-full bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all duration-200" style="width: 100%"></div>
+            </div>
+          </div>
+
+          <!-- Question Text -->
+          <div class="p-4 sm:p-5 rounded-2xl bg-slate-950/80 border border-slate-800">
+            <p id="quiz-question-text" class="text-sm sm:text-base font-bold text-white leading-relaxed">
+              Memuat pertanyaan...
+            </p>
+          </div>
+
+          <!-- Options Grid -->
+          <div id="quiz-options-grid" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
+            <!-- Buttons injected via JS -->
+          </div>
+
+          <!-- Feedback Banner -->
+          <div id="quiz-feedback-box" class="hidden p-3.5 rounded-xl border text-xs font-medium leading-relaxed"></div>
+        </div>
+
+        <!-- Quiz Game Over Screen -->
+        <div id="quiz-end-screen" class="hidden text-center py-6 space-y-4">
+          <div class="text-4xl">🏆</div>
+          <h4 id="quiz-end-title" class="text-xl font-black text-white">Pertarungan Selesai!</h4>
+          <div class="inline-flex flex-wrap justify-center gap-4 bg-slate-950 px-5 py-3 rounded-2xl border border-slate-800">
+            <div>
+              <div class="text-[11px] text-slate-400">Skor Akhir</div>
+              <div id="quiz-final-score" class="font-mono text-2xl font-black text-indigo-400">0</div>
+            </div>
+            <div class="border-l border-slate-800 pl-4">
+              <div class="text-[11px] text-slate-400">Bonus XP</div>
+              <div id="quiz-earned-xp" class="font-mono text-2xl font-black text-emerald-400">+0 XP</div>
+            </div>
+          </div>
+          <div>
+            <button onclick="startQuizGame()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-xs sm:text-sm font-bold text-white cursor-pointer">
+              <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
+              <span>Main Lagi</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MINI-GAME 2: BUG SMASHER & FOCUS REFLEX (CANVAS ARCADE) -->
+      <div id="game-panel-smasher" class="hidden glass-card rounded-2xl p-5 sm:p-6 space-y-4">
+        <div class="flex flex-wrap items-center justify-between gap-3 border-b border-slate-800 pb-4">
+          <div>
+            <h3 class="text-base sm:text-lg font-extrabold text-white flex items-center gap-2">
+              <i data-lucide="bug" class="w-5 h-5 text-emerald-400"></i>
+              Bug Smasher & Focus Reflex (30 Detik)
+            </h3>
+            <p class="text-xs text-slate-400">
+              Klik/Tap <strong class="text-emerald-300">Bug Kode (🐛 +100)</strong> & <strong class="text-cyan-300">Energi Fokus (⚡ +200 & +2s)</strong>. Hindari <strong class="text-rose-400">Virus Merah (👾 -150 & -2s)</strong>!
+            </p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="bg-slate-950 px-3 py-1.5 rounded-xl border border-slate-800 text-xs">
+              <span class="text-slate-400">High Score:</span>
+              <span id="smasher-high-score" class="font-mono font-extrabold text-emerald-400 ml-1">0</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Arcade HUD -->
+        <div class="flex flex-wrap items-center justify-between gap-2 bg-slate-950/90 p-3 rounded-xl border border-slate-800">
+          <div class="flex items-center gap-4">
+            <span class="font-mono text-sm font-extrabold text-white">Skor: <span id="smasher-score" class="text-emerald-400">0</span></span>
+            <span id="smasher-combo" class="px-2 py-0.5 rounded-md text-xs font-mono font-bold bg-indigo-500/20 text-indigo-300">Combo x1</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="font-mono text-sm font-extrabold text-amber-400">Waktu: <span id="smasher-time">30.0</span>s</span>
+            <button id="btn-smasher-start" onclick="startSmasherGame()" class="px-4 py-1.5 rounded-lg bg-emerald-600 hover:bg-emerald-500 text-xs font-extrabold text-white cursor-pointer">
+              Mulai Game
+            </button>
+          </div>
+        </div>
+
+        <!-- Responsive Canvas Container -->
+        <div id="smasher-canvas-wrapper" class="relative w-full h-[340px] sm:h-[400px] rounded-2xl overflow-hidden border border-slate-700/80 bg-slate-950 select-none">
+          <canvas id="smasher-canvas" class="block w-full h-full cursor-crosshair"></canvas>
+
+          <!-- Overlay Start / Result Prompt inside Canvas -->
+          <div id="smasher-overlay" class="absolute inset-0 bg-slate-950/80 backdrop-blur-xs flex flex-col items-center justify-center p-4 text-center space-y-3">
+            <div class="text-4xl">🐛 ⚡ 👾</div>
+            <h4 id="smasher-overlay-title" class="text-lg sm:text-xl font-black text-white">Siap Basmi Bug & Tangkap Fokus?</h4>
+            <p id="smasher-overlay-desc" class="text-xs text-slate-300 max-w-sm">
+              Tap/klik secepat mungkin sebelum target menghilang. Dapatkan bonus XP setelah selesai!
+            </p>
+            <button onclick="startSmasherGame()" class="inline-flex items-center gap-2 px-5 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-500 text-xs sm:text-sm font-extrabold text-white shadow-lg shadow-emerald-600/25 cursor-pointer">
+              <i data-lucide="play" class="w-4 h-4"></i>
+              <span>Main Sekarang</span>
+            </button>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <!-- =====================================================================
+       CUSTOM MODAL (EDIT TASK / RESET DAY — ZERO alert/confirm)
+       ===================================================================== -->
+  <div id="custom-modal-backdrop" class="fixed inset-0 bg-slate-950/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+    <div class="glass-card rounded-2xl max-w-md w-full p-5 border border-slate-700 shadow-2xl space-y-4">
+      <div class="flex items-center justify-between">
+        <h3 id="modal-title" class="text-base font-extrabold text-white">Modal</h3>
+        <button onclick="closeCustomModal()" class="p-1.5 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <div id="modal-body" class="space-y-3"></div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       APPLICATION JAVASCRIPT ENGINE
+       ===================================================================== -->
+  <script>
+    /**
+     * =========================================================================
+     * 1. OFFICIAL DATA: JADWAL ASAS X PPLG 1 & WORKOUT PROGRAM
+     * =========================================================================
+     */
+    const STORAGE_KEY = 'pplg1_grind_os_ziyan_v2';
+
+    const OFFICIAL_ASAS_SCHEDULE = [
+      {
+        day: 'Senin, 7 Des 2026',
+        badge: 'HARI 1',
+        accent: 'indigo',
+        slots: [
+          { jam: 'Jam 1 • 07:00–08:30', subject: 'Muatan Lokal (Bahasa Sunda)', teacher: 'Deni Hidayat, S.S., M.Si' },
+          { jam: 'Jam 2 • 08:30–10:00', subject: 'Sejarah', teacher: 'Ayu Febriany, S.Hum' },
+          { jam: 'Istirahat • 10:00–10:15', subject: 'Istirahat', teacher: '', isBreak: true },
+          { jam: 'Jam 3 • 10:15–11:45', subject: 'Matematika', teacher: 'Dina Rindumas, S.Pd' }
+        ]
+      },
+      {
+        day: 'Selasa, 8 Des 2026',
+        badge: 'HARI 2',
+        accent: 'cyan',
+        slots: [
+          { jam: 'Jam 1 • 07:00–08:30', subject: 'Koding dan Kecerdasan Artifisial', teacher: 'Subhanudin, S.Kom., Gr' },
+          { jam: 'Jam 2 • 08:30–10:00', subject: 'Bahasa Inggris', teacher: 'Nurul Dini Anuggarani, S.S' },
+          { jam: 'Istirahat • 10:00–10:15', subject: 'Istirahat', teacher: '', isBreak: true },
+          { jam: 'Jam 3 • 10:15–11:45', subject: 'Dasar-dasar Program Keahlian PPLG', teacher: 'Agus Syaiful Falah, S.Kom., Gr' }
+        ]
+      },
+      {
+        day: 'Rabu, 9 Des 2026',
+        badge: 'HARI 3',
+        accent: 'emerald',
+        slots: [
+          { jam: 'Jam 1 • 07:00–08:30', subject: 'Pendidikan Jasmani, Olahraga, & Kesehatan', teacher: 'Ading Suherlan, S.Pd., M.Si' },
+          { jam: 'Jam 2 • 08:30–10:00', subject: 'Projek Ilmu Pengetahuan Alam & Sosial', teacher: 'Rika Dwitasari, S.Pd' },
+          { jam: 'Istirahat • 10:00–10:15', subject: 'Istirahat', teacher: '', isBreak: true },
+          { jam: 'Jam 3 • 10:15–11:45', subject: 'Pendidikan Pancasila', teacher: 'Iip Taofiqiyah, S.Pd., Gr' }
+        ]
+      },
+      {
+        day: 'Kamis, 10 Des 2026',
+        badge: 'HARI 4',
+        accent: 'amber',
+        slots: [
+          { jam: 'Jam 1 • 07:00–08:30', subject: 'Seni Budaya', teacher: 'Elis Sulaesih, S.Pd' },
+          { jam: 'Jam 2 • 08:30–10:00', subject: 'Bahasa Indonesia', teacher: 'Nurwulan Ostinawati, S.Pd' },
+          { jam: 'Istirahat • 10:00–10:15', subject: 'Istirahat', teacher: '', isBreak: true },
+          { jam: 'Jam 3 • 10:15–11:45', subject: 'Jam 3 Kosong (Persiapan Hari Jumat)', teacher: 'Belajar Mandiri', isEmpty: true }
+        ]
+      },
+      {
+        day: "Jum'at, 11 Des 2026",
+        badge: 'HARI 5',
+        accent: 'purple',
+        slots: [
+          { jam: 'Jam 1 • 07:00–08:30', subject: 'Pendidikan Agama Islam & Budi Pekerti', teacher: 'Ika Jamilah, S.Pd.I., Gr' },
+          { jam: 'Jam 2 • 08:30–10:00', subject: 'Informatika', teacher: 'Zaef Andreana, S.Kom., Gr' },
+          { jam: 'Istirahat • 10:00–10:15', subject: 'Istirahat', teacher: '', isBreak: true },
+          { jam: 'Jam 3 • 10:15–11:45', subject: 'Selesai ASAS Ganjil!', teacher: 'Selamat Libur Semester', isEmpty: true }
+        ]
+      }
+    ];
+
+    const ASAS_ROADMAP_ITEMS = [
+      { dates: '23 – 25 Nov', focus: 'Prioritas Hari 1 ASAS: Matematika (Aljabar/Logika), Sejarah, & Bahasa Sunda', tag: 'Hari 1 Ujian' },
+      { dates: '26 – 28 Nov', focus: 'Prioritas Hari 2 ASAS: Koding & Kecerdasan Artifisial + Dasar PPLG (Algoritma & Web)', tag: 'Kejuruan PPLG' },
+      { dates: '29 – 30 Nov', focus: 'Bahasa Inggris (Reading & Grammar) + Projek IPAS (Energi & Sistem)', tag: 'Hari 2 & 3' },
+      { dates: '1 – 2 Des', focus: 'Pendidikan Pancasila, Bahasa Indonesia, Seni Budaya, & PJOK', tag: 'Hari 3 & 4' },
+      { dates: '3 – 4 Des', focus: 'PAI & Budi Pekerti + Informatika (Jaringan, Data, & Sistem Komputer)', tag: 'Hari 5 Ujian' },
+      { dates: '5 – 6 Des (H-1)', focus: 'Final Drill & Simulasi Soal Hari 1 (B. Sunda, Sejarah, Matematika) + Tidur Cukup', tag: 'Final Lock-In' }
+    ];
+
+    const DEFAULT_ASAS_TASKS = [
+      { id: 'asas-1', time: '16:00', title: 'Latihan 15 Soal Matematika & Rangkuman Rumus Inti', subject: 'Hari 1 • Matematika', completed: false },
+      { id: 'asas-2', time: '19:00', title: 'Review Materi Bahasa Sunda (Sisindiran & Aksara/Kawih) + Sejarah', subject: 'Hari 1 • B. Sunda & Sejarah', completed: false },
+      { id: 'asas-3', time: '20:00', title: 'Bedah Konsep Koding & Kecerdasan Artifisial + Flowchart Dasar PPLG', subject: 'Hari 2 • Koding & PPLG', completed: false },
+      { id: 'asas-4', time: '21:00', title: 'Latihan Vocabulary Bahasa Inggris & Kisi-Kisi IPAS / Informatika', subject: 'Hari 2-5 • Umum', completed: false }
+    ];
+
+    // 9 Comprehensive Bodyweight Workout Movements scaling across Week 1 to Week 4
+    const WORKOUT_MOVEMENTS = [
+      {
+        id: 'wk-1',
+        phase: 'Pemanasan (Warm-Up)',
+        name: 'Jumping Jacks',
+        muscle: 'Full Body & Kardio Awal',
+        instruction: 'Lompat buka kaki selebar bahu sambil tepuk tangan di atas kepala, jaga ritme napas stabil.',
+        timerSec: 45,
+        repsByWeek: { 1: '45 detik', 2: '60 detik', 3: '2 set x 45 detik', 4: '2 set x 60 detik' }
+      },
+      {
+        id: 'wk-2',
+        phase: 'Pemanasan (Warm-Up)',
+        name: 'Arm Circles & Dynamic Stretch',
+        muscle: 'Bahu, Punggung & Pinggul',
+        instruction: 'Putar lengan ke depan 30 detik dan ke belakang 30 detik, lanjutkan rotasi pinggul perlahan.',
+        timerSec: 60,
+        repsByWeek: { 1: '60 detik', 2: '60 detik', 3: '75 detik', 4: '90 detik' }
+      },
+      {
+        id: 'wk-3',
+        phase: 'Latihan Inti (Main Circuit)',
+        name: 'Push-Up',
+        muscle: 'Dada, Bahu Depan & Trisep',
+        instruction: 'Posisi badan lurus dari kepala hingga tumit, turunkan dada hampir menyentuh lantai lalu dorong kuat.',
+        timerSec: 45,
+        repsByWeek: { 1: '3 set x 10 reps', 2: '3 set x 12 reps', 3: '3 set x 15 reps', 4: '4 set x 15 reps' }
+      },
+      {
+        id: 'wk-4',
+        phase: 'Latihan Inti (Main Circuit)',
+        name: 'Bodyweight Squat',
+        muscle: 'Paha Depan, Hamstring & Glutes',
+        instruction: 'Buka kaki selebar bahu, dorong pinggul ke belakang seperti duduk di kursi, jaga punggung tetap tegak.',
+        timerSec: 45,
+        repsByWeek: { 1: '3 set x 15 reps', 2: '3 set x 18 reps', 3: '3 set x 20 reps', 4: '4 set x 20 reps' }
+      },
+      {
+        id: 'wk-5',
+        phase: 'Latihan Inti (Main Circuit)',
+        name: 'Plank Hold',
+        muscle: 'Core, Perut & Punggung Bawah',
+        instruction: 'Tumpu berat badan pada siku dan ujung kaki, kencangkan otot perut, jangan biarkan pinggul turun.',
+        timerSec: 30,
+        repsByWeek: { 1: '3 set x 30 detik', 2: '3 set x 45 detik', 3: '3 set x 60 detik', 4: '4 set x 60 detik' }
+      },
+      {
+        id: 'wk-6',
+        phase: 'Latihan Inti (Main Circuit)',
+        name: 'Mountain Climbers',
+        muscle: 'Core, Bahu & Daya Tahan Kardio',
+        instruction: 'Dari posisi high plank, tarik lutut kanan dan kiri ke arah dada secara bergantian dengan cepat.',
+        timerSec: 30,
+        repsByWeek: { 1: '3 set x 30 detik', 2: '3 set x 40 detik', 3: '3 set x 45 detik', 4: '4 set x 45 detik' }
+      },
+      {
+        id: 'wk-7',
+        phase: 'Latihan Inti (Main Circuit)',
+        name: 'Reverse Lunges',
+        muscle: 'Keseimbangan Kaki & Glutes',
+        instruction: 'Langkahkan satu kaki ke belakang hingga lutut membentuk sudut 90 derajat, lalu kembali berdiri tegak.',
+        timerSec: 45,
+        repsByWeek: { 1: '3 set x 10 reps/kaki', 2: '3 set x 12 reps/kaki', 3: '3 set x 14 reps/kaki', 4: '3 set x 16 reps/kaki' }
+      },
+      {
+        id: 'wk-8',
+        phase: 'Latihan Inti (Main Circuit)',
+        name: 'Sit-Up / Bicycle Crunch',
+        muscle: 'Otot Perut Atas, Bawah & Obliques',
+        instruction: 'Berbaring telentang, tekuk lutut, angkat bahu dan arahkan siku berlawanan ke lutut secara terkontrol.',
+        timerSec: 45,
+        repsByWeek: { 1: '3 set x 12 reps', 2: '3 set x 15 reps', 3: '3 set x 18 reps', 4: '4 set x 20 reps' }
+      },
+      {
+        id: 'wk-9',
+        phase: 'Pendinginan (Cool-Down)',
+        name: 'Cobra Stretch & Deep Breathing',
+        muscle: 'Peregangan Perut, Dada & Tulang Belakang',
+        instruction: 'Tengkurap, dorong tubuh bagian atas ke atas dengan tangan, tahan sambil tarik napas dalam lewat hidung.',
+        timerSec: 60,
+        repsByWeek: { 1: '60 detik', 2: '60 detik', 3: '75 detik', 4: '90 detik' }
+      }
+    ];
+
+    // Authentic X PPLG 1 Quiz Question Bank
+    const QUIZ_QUESTIONS = [
+      {
+        subject: 'Koding & Kecerdasan Artifisial',
+        q: 'Cabang Kecerdasan Artifisial (AI) yang memungkinkan komputer belajar dari data tanpa diprogram secara eksplisit disebut...',
+        options: ['Machine Learning', 'Cloud Storage', 'BIOS Firmware', 'Subnetting'],
+        answer: 0,
+        exp: 'Machine Learning adalah cabang AI yang melatih model menggunakan data untuk mengenali pola dan membuat prediksi.'
+      },
+      {
+        subject: 'Dasar Program Keahlian PPLG',
+        q: 'Urutan langkah logis dan sistematis untuk menyelesaikan suatu masalah pemrograman disebut...',
+        options: ['Compiler', 'Algoritma', 'Syntax Error', 'Hosting'],
+        answer: 1,
+        exp: 'Algoritma adalah urutan langkah-langkah logis yang terstruktur untuk menyelesaikan masalah.'
+      },
+      {
+        subject: 'Dasar Program Keahlian PPLG',
+        q: 'Tag HTML yang digunakan untuk membuat tautan (hyperlink) ke halaman lain adalah...',
+        options: ['<link>', '<href>', '<a>', '<url>'],
+        answer: 2,
+        exp: 'Tag <a> (anchor) dengan atribut href digunakan untuk membuat hyperlink di HTML.'
+      },
+      {
+        subject: 'Matematika',
+        q: 'Jika 3x - 7 = 14, maka nilai dari 2x + 1 adalah...',
+        options: ['13', '15', '17', '11'],
+        answer: 1,
+        exp: '3x = 21 → x = 7. Maka 2(7) + 1 = 15.'
+      },
+      {
+        subject: 'Bahasa Sunda',
+        q: 'Karya sastra Sunda anu diwangun ku cangkang jeung eusi, sarta unggal padalisanana diwangun ku dalapan engang disebut...',
+        options: ['Dongéng', 'Sisindiran', 'Biantara', 'Warta'],
+        answer: 1,
+        exp: 'Sisindiran (paparikan/rarakitan) miboga bagian cangkang jeung eusi kalayan aturan 8 engang sapadalisan.'
+      },
+      {
+        subject: 'Bahasa Inggris',
+        q: 'Choose the correct form: "Ziyan _____ his ASAS preparation and daily workout since last week."',
+        options: ['has started', 'starting', 'was start', 'have started'],
+        answer: 0,
+        exp: 'Present Perfect Tense ("has started") digunakan untuk aksi yang dimulai di masa lalu dan masih relevan hingga sekarang.'
+      },
+      {
+        subject: 'Informatika',
+        q: 'Bilangan biner 1011 jika dikonversi ke dalam sistem bilangan desimal bernilai...',
+        options: ['9', '10', '11', '13'],
+        answer: 2,
+        exp: '(1×8) + (0×4) + (1×2) + (1×1) = 8 + 0 + 2 + 1 = 11.'
+      },
+      {
+        subject: 'Projek IPAS',
+        q: 'Perubahan energi yang terjadi pada panel surya (solar cell) saat terkena sinar matahari adalah...',
+        options: ['Energi gerak → energi panas', 'Energi cahaya → energi listrik', 'Energi kimia → energi bunyi', 'Energi listrik → energi cahaya'],
+        answer: 1,
+        exp: 'Sel fotovoltaik pada panel surya mengubah energi cahaya matahari langsung menjadi energi listrik.'
+      },
+      {
+        subject: 'Sejarah',
+        q: 'Sumber sejarah yang berasal dari kesaksian langsung pelaku atau saksi mata peristiwa sejarah disebut sumber...',
+        options: ['Sekunder', 'Tersier', 'Primer', 'Mitologi'],
+        answer: 2,
+        exp: 'Sumber primer adalah kesaksian atau bukti asli yang dibuat langsung pada waktu peristiwa terjadi.'
+      },
+      {
+        subject: 'Pendidikan Pancasila',
+        q: 'Nilai-nilai Pancasila yang bersifat tetap dan tidak dapat diubah karena melekat pada kelangsungan hidup negara disebut nilai...',
+        options: ['Instrumental', 'Praksis', 'Dasar', 'Sementara'],
+        answer: 2,
+        exp: 'Nilai dasar Pancasila (Ketuhanan, Kemanusiaan, Persatuan, Kerakyatan, Keadilan) bersifat universal dan tetap.'
+      },
+      {
+        subject: 'Koding & Kecerdasan Artifisial',
+        q: 'Dalam struktur percabangan pemrograman, blok kode di dalam "else" akan dijalankan apabila...',
+        options: ['Semua kondisi "if" bernilai False', 'Kondisi "if" bernilai True', 'Program mengalami infinite loop', 'Variabel belum dideklarasikan'],
+        answer: 0,
+        exp: 'Blok else menjadi jalur alternatif terakhir ketika seluruh kondisi if / else if sebelumnya bernilai salah (False).'
+      },
+      {
+        subject: 'PJOK',
+        q: 'Gerakan Plank dalam latihan kebugaran jasmani terutama berfungsi untuk melatih kekuatan otot...',
+        options: ['Betis dan pergelangan kaki', 'Core (perut dan punggung bawah)', 'Leher dan rahang', 'Jari tangan'],
+        answer: 1,
+        exp: 'Plank adalah latihan isometrik utama untuk memperkuat otot inti (core stability).'
+      }
+    ];
+
+    /**
+     * =========================================================================
+     * 2. PERSISTENT STATE MANAGEMENT (localStorage)
+     * =========================================================================
+     */
+    let appState = {
+      lastActiveDate: getLocalTodayString(),
+      asasTargetDate: '2026-12-07T07:00:00+07:00',
+      workoutStartDate: '2026-11-23T00:00:00+07:00',
+      workoutTargetDate: '2026-12-23T23:59:59+07:00',
+      asasTasks: JSON.parse(JSON.stringify(DEFAULT_ASAS_TASKS)),
+      workoutCompletedIds: [],
+      workoutWeek: 1,
+      workout30Days: Array(30).fill(false),
+      nagIntervalSec: 60,
+      nagMode: 'standard',
+      isMuted: false,
+      bonusXp: 0,
+      quizHighScore: 0,
+      smasherHighScore: 0
+    };
+
+    // Runtime variables
+    let activeMainTab = 'dashboard';
+    let nagSecondsRemaining = 60;
+    let titleBlinkState = false;
+    let audioCtx = null;
+
+    // Timers runtime
+    let pomoSeconds = 1500;
+    let pomoRunning = false;
+    let pomoInterval = null;
+
+    let exTimerName = 'Jumping Jacks';
+    let exTimerDefault = 45;
+    let exTimerRemaining = 45;
+    let exTimerRunning = false;
+    let exTimerInterval = null;
+
+    function getLocalTodayString() {
+      const now = new Date();
+      return `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+    }
+
+    function getCurrentChallengeDayIndex() {
+      const start = new Date(appState.workoutStartDate);
+      start.setHours(0, 0, 0, 0);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      const diff = Math.floor((today - start) / 86400000);
+      return Math.max(0, Math.min(29, diff));
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (raw) {
+          appState = { ...appState, ...JSON.parse(raw) };
+        }
+      } catch (e) {
+        console.error('Gagal memuat state:', e);
+      }
+
+      // Daily rollover check: reset daily checks on a new calendar day so nagging alarm triggers fresh
+      const today = getLocalTodayString();
+      if (appState.lastActiveDate !== today) {
+        appState.asasTasks = appState.asasTasks.map(t => ({ ...t, completed: false }));
+        appState.workoutCompletedIds = [];
+        appState.lastActiveDate = today;
+        saveState();
+      }
+      nagSecondsRemaining = Number(appState.nagIntervalSec) || 60;
+    }
+
+    function saveState() {
+      try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(appState));
+      } catch (e) {
+        console.error('Gagal menyimpan state:', e);
+      }
+    }
+
+    /**
+     * =========================================================================
+     * 3. WEB AUDIO API SYNTHESIZER (NO EXTERNAL AUDIO URLS)
+     * =========================================================================
+     */
+    function ensureAudioContext() {
+      if (!audioCtx) {
+        const Ctx = window.AudioContext || window.webkitAudioContext;
+        if (Ctx) audioCtx = new Ctx();
+      }
+      if (audioCtx && audioCtx.state === 'suspended') {
+        audioCtx.resume().catch(() => {});
+      }
+    }
+
+    function playTone(freq, startOffset, duration, type = 'triangle', peakGain = 0.22) {
+      if (appState.isMuted) return;
+      try {
+        ensureAudioContext();
+        if (!audioCtx) return;
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now + startOffset);
+        gain.gain.setValueAtTime(0.001, now + startOffset);
+        gain.gain.exponentialRampToValueAtTime(peakGain, now + startOffset + 0.015);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + startOffset + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + startOffset);
+        osc.stop(now + startOffset + duration + 0.02);
+      } catch (e) {}
+    }
+
+    function playUrgentNagSound() {
+      playTone(880, 0.00, 0.12, 'sawtooth', 0.22);
+      playTone(1174.66, 0.14, 0.12, 'sawtooth', 0.22);
+      playTone(880, 0.28, 0.12, 'sawtooth', 0.22);
+      playTone(1318.5, 0.42, 0.18, 'sawtooth', 0.25);
+    }
+
+    function playSuccessChime() {
+      playTone(523.25, 0.00, 0.25, 'sine', 0.18);
+      playTone(659.25, 0.07, 0.25, 'sine', 0.18);
+      playTone(783.99, 0.14, 0.28, 'sine', 0.18);
+      playTone(1046.5, 0.21, 0.35, 'sine', 0.20);
+    }
+
+    function playErrorBuzz() {
+      playTone(180, 0.00, 0.18, 'sawtooth', 0.22);
+      playTone(140, 0.15, 0.22, 'sawtooth', 0.22);
+    }
+
+    /**
+     * =========================================================================
+     * 4. PERSISTENT NAGGING ALARM ENGINE & NOTIFICATIONS
+     * =========================================================================
+     */
+    function getTotalTasksStats() {
+      const asasTotal = appState.asasTasks.length;
+      const asasDone = appState.asasTasks.filter(t => t.completed).length;
+      const wkTotal = WORKOUT_MOVEMENTS.length;
+      const wkDone = appState.workoutCompletedIds.length;
+      return {
+        asasTotal,
+        asasDone,
+        wkTotal,
+        wkDone,
+        total: asasTotal + wkTotal,
+        done: asasDone + wkDone
+      };
+    }
+
+    function isNaggingRequired() {
+      const stats = getTotalTasksStats();
+      if (stats.total === 0) return false;
+      if (appState.nagMode === 'brutal') {
+        return stats.done < stats.total;
+      }
+      return stats.done === 0;
+    }
+
+    function updateNotificationPermissionUI() {
+      const statusEl = document.getElementById('browser-perm-status');
+      const btnLabel = document.getElementById('btn-notif-label');
+
+      if (!('Notification' in window)) {
+        statusEl.innerHTML = 'Notifikasi: <strong class="text-slate-300">Alert Layar & Suara</strong>';
+        btnLabel.textContent = 'Suara Alarm Aktif';
+        return;
+      }
+
+      if (Notification.permission === 'granted') {
+        statusEl.innerHTML = 'Notifikasi Browser: <strong class="text-emerald-400">AKTIF & DIIZINKAN</strong>';
+        btnLabel.textContent = 'Notifikasi & Suara Aktif ✓';
+      } else if (Notification.permission === 'denied') {
+        statusEl.innerHTML = 'Notifikasi Browser: <strong class="text-rose-400">Diblokir Browser (Alarm Layar Aktif)</strong>';
+        btnLabel.textContent = 'Alarm Layar Aktif';
+      } else {
+        statusEl.innerHTML = 'Notifikasi Browser: <strong class="text-amber-300">Belum Diizinkan</strong>';
+        btnLabel.textContent = 'Aktifkan Notifikasi & Suara';
+      }
+    }
+
+    async function requestNotificationAndAudio() {
+      ensureAudioContext();
+      playSuccessChime();
+      if ('Notification' in window && Notification.permission !== 'granted') {
+        try {
+          const perm = await Notification.requestPermission();
+          updateNotificationPermissionUI();
+          if (perm === 'granted') {
+            showToast('Notifikasi Browser & Suara Alarm Berhasil Diaktifkan!', 'success');
+          } else {
+            showToast('Suara Alarm Aktif! Pengingat layar akan terus berjalan.', 'info');
+          }
+        } catch (e) {
+          showToast('Audio Alarm Diaktifkan!', 'success');
+        }
+      } else {
+        updateNotificationPermissionUI();
+        showToast('Sistem Notifikasi & Alarm Sudah Aktif!', 'success');
+      }
+    }
+
+    function toggleSoundMute() {
+      appState.isMuted = !appState.isMuted;
+      saveState();
+      syncMuteUI();
+      if (!appState.isMuted) {
+        ensureAudioContext();
+        playSuccessChime();
+        showToast('Suara Alarm Dinyalakan (ON)', 'info');
+      } else {
+        showToast('Suara Alarm Dimatikan (Mute)', 'info');
+      }
+    }
+
+    function syncMuteUI() {
+      const muteIcon = document.getElementById('icon-mute-state');
+      const unmuteIcon = document.getElementById('icon-unmute-state');
+      const label = document.getElementById('label-mute-state');
+      if (appState.isMuted) {
+        muteIcon.classList.remove('hidden');
+        unmuteIcon.classList.add('hidden');
+        label.textContent = 'Muted';
+      } else {
+        muteIcon.classList.add('hidden');
+        unmuteIcon.classList.remove('hidden');
+        label.textContent = 'Suara ON';
+      }
+    }
+
+    function updateNagSettings() {
+      appState.nagIntervalSec = Number(document.getElementById('nag-interval-select').value);
+      appState.nagMode = document.getElementById('nag-mode-select').value;
+      nagSecondsRemaining = appState.nagIntervalSec;
+      saveState();
+      updateNaggingBannerUI();
+      showToast(`Pengaturan alarm diperbarui (${appState.nagIntervalSec < 60 ? appState.nagIntervalSec + ' detik' : (appState.nagIntervalSec / 60) + ' menit'})`, 'info');
+    }
+
+    function fireNaggingReminder(isManualTest = false) {
+      const stats = getTotalTasksStats();
+      playUrgentNagSound();
+
+      const overlay = document.getElementById('screen-flash-overlay');
+      const banner = document.getElementById('nagging-banner');
+      overlay.classList.remove('urgent-screen-flash');
+      banner.classList.remove('animate-shake');
+      void overlay.offsetWidth;
+      overlay.classList.add('urgent-screen-flash');
+      banner.classList.add('animate-shake');
+
+      const title = isManualTest
+        ? '🔔 TEST ALARM PPLG1 GRIND OS!'
+        : stats.done === 0
+          ? '⚠️ ZIYAN! BELUM SELESAI SATUPUN HARI INI!'
+          : `🔥 MODE BRUTAL: Baru ${stats.done}/${stats.total} Selesai!`;
+
+      const body = stats.done === 0
+        ? 'ASAS X PPLG 1 dimulai 7 Des 2026 & Workout 1 bulan menunggu. Centang minimal 1 tugas sekarang!'
+        : `Selesaikan sisa ${stats.total - stats.done} tugas lagi untuk menghentikan Mode Brutal!`;
+
+      showToast(`${title} — ${body}`, 'urgent');
+
+      if ('Notification' in window && Notification.permission === 'granted') {
+        try {
+          const n = new Notification(title, {
+            body,
+            tag: 'pplg1-grind-os-nag',
+            renotify: true,
+            requireInteraction: true
+          });
+          n.onclick = () => { window.focus(); n.close(); };
+        } catch (e) {}
+      }
+    }
+
+    function triggerTestAlarm() {
+      ensureAudioContext();
+      fireNaggingReminder(true);
+    }
+
+    function showToast(message, type = 'urgent') {
+      const container = document.getElementById('toast-container');
+      const toast = document.createElement('div');
+      const themeMap = {
+        urgent: 'bg-rose-950/95 border-rose-500 text-rose-100 shadow-2xl shadow-rose-950/90',
+        success: 'bg-emerald-950/95 border-emerald-500 text-emerald-100 shadow-2xl shadow-emerald-950/90',
+        info: 'bg-slate-900/95 border-indigo-500 text-slate-100 shadow-2xl'
+      };
+      const iconMap = { urgent: 'siren', success: 'check-circle-2', info: 'bell' };
+
+      toast.className = `pointer-events-auto p-3.5 rounded-xl border ${themeMap[type] || themeMap.info} flex items-start gap-3 transition-all duration-300 transform translate-y-2 opacity-0`;
+      toast.innerHTML = `
+        <i data-lucide="${iconMap[type] || 'bell'}" class="w-5 h-5 shrink-0 mt-0.5 ${type === 'urgent' ? 'text-rose-400 animate-bounce' : type === 'success' ? 'text-emerald-400' : 'text-indigo-400'}"></i>
+        <div class="text-xs font-medium leading-relaxed flex-1">${message}</div>
+        <button onclick="this.parentElement.remove()" class="text-slate-400 hover:text-white cursor-pointer">
+          <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+      `;
+      container.appendChild(toast);
+      lucide.createIcons();
+      requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
+      setTimeout(() => {
+        toast.classList.add('opacity-0', 'translate-y-2');
+        setTimeout(() => toast.remove(), 300);
+      }, type === 'urgent' ? 6000 : 3800);
+    }
+
+    /**
+     * =========================================================================
+     * 5. REAL-TIME CLOCK, COUNTDOWNS & XP/RANK SYSTEM
+     * =========================================================================
+     */
+    const HARI_ID = ['Minggu', 'Senin', 'Selasa', 'Rabu', 'Kamis', "Jum'at", 'Sabtu'];
+    const BULAN_ID = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+    function formatCountdownParts(diffMs) {
+      if (diffMs <= 0) return { days: '00', hours: '00', mins: '00', secs: '00' };
+      const sec = Math.floor(diffMs / 1000);
+      return {
+        days: String(Math.floor(sec / 86400)).padStart(2, '0'),
+        hours: String(Math.floor((sec % 86400) / 3600)).padStart(2, '0'),
+        mins: String(Math.floor((sec % 3600) / 60)).padStart(2, '0'),
+        secs: String(sec % 60).padStart(2, '0')
+      };
+    }
+
+    function tickRealTimeEngine() {
+      const now = new Date();
+      const dateStr = `${HARI_ID[now.getDay()]}, ${now.getDate()} ${BULAN_ID[now.getMonth()]} ${now.getFullYear()}`;
+      const timeStr = `${String(now.getHours()).padStart(2, '0')}:${String(now.getMinutes()).padStart(2, '0')}:${String(now.getSeconds()).padStart(2, '0')} WIB`;
+
+      document.getElementById('live-date-display').innerHTML = `<i data-lucide="calendar" class="w-3.5 h-3.5 text-indigo-400"></i> ${dateStr}`;
+      document.getElementById('live-clock-display').textContent = timeStr;
+
+      // Countdown 1: ASAS
+      const asasStart = new Date(appState.workoutStartDate).getTime();
+      const asasTarget = new Date(appState.asasTargetDate).getTime();
+      const asasParts = formatCountdownParts(asasTarget - now.getTime());
+
+      document.getElementById('asas-cd-days').textContent = asasParts.days;
+      document.getElementById('asas-cd-hours').textContent = asasParts.hours;
+      document.getElementById('asas-cd-mins').textContent = asasParts.mins;
+      document.getElementById('asas-cd-secs').textContent = asasParts.secs;
+
+      const span = Math.max(1, asasTarget - asasStart);
+      const elapsed = Math.min(span, Math.max(0, now.getTime() - asasStart));
+      const pct = Math.round((elapsed / span) * 100);
+      document.getElementById('asas-timeline-pct').textContent = `${pct}%`;
+      document.getElementById('asas-timeline-bar').style.width = `${pct}%`;
+
+      // Countdown 2: Workout 30 Days
+      const wkTarget = new Date(appState.workoutTargetDate).getTime();
+      const wkParts = formatCountdownParts(wkTarget - now.getTime());
+      document.getElementById('workout-mini-cd').textContent = `${wkParts.days}h ${wkParts.hours}j ${wkParts.mins}m ${wkParts.secs}d`;
+
+      // Nagging Alarm Tick
+      if (isNaggingRequired()) {
+        nagSecondsRemaining--;
+        if (nagSecondsRemaining <= 0) {
+          fireNaggingReminder(false);
+          nagSecondsRemaining = Number(appState.nagIntervalSec) || 60;
+        }
+        const m = String(Math.floor(nagSecondsRemaining / 60)).padStart(2, '0');
+        const s = String(nagSecondsRemaining % 60).padStart(2, '0');
+        document.getElementById('nag-next-timer').textContent = `${m}:${s}`;
+
+        titleBlinkState = !titleBlinkState;
+        document.title = titleBlinkState ? '⚠️ BELUM SELESAI SATUPUN!' : 'PPLG1 GRIND OS — Ziyan';
+      } else {
+        document.title = '✅ Target Aman — PPLG1 GRIND OS';
+      }
+    }
+
+    function calculateXPAndRank() {
+      const stats = getTotalTasksStats();
+      const streakDays = appState.workout30Days.filter(Boolean).length;
+      const totalXp = (stats.asasDone * 50) + (stats.wkDone * 40) + (streakDays * 100) + (appState.bonusXp || 0);
+
+      const ranks = [
+        { min: 0, max: 300, title: 'Lv.1 Rookie Coder', next: 'Lv.2 Logic Sprinter' },
+        { min: 300, max: 800, title: 'Lv.2 Logic Sprinter', next: 'Lv.3 Fullstack Grinder' },
+        { min: 800, max: 1500, title: 'Lv.3 Fullstack Grinder', next: 'Lv.4 Cyber Athlete' },
+        { min: 1500, max: 2500, title: 'Lv.4 Cyber Athlete', next: 'Lv.5 ASAS & Fitness Master' },
+        { min: 2500, max: 5000, title: 'Lv.5 ASAS & Fitness Master', next: 'Max Rank Achieved' }
+      ];
+
+      let currentRank = ranks[0];
+      for (const r of ranks) {
+        if (totalXp >= r.min) currentRank = r;
+      }
+
+      const range = Math.max(1, currentRank.max - currentRank.min);
+      const progressPct = totalXp >= 2500 ? 100 : Math.min(100, Math.round(((totalXp - currentRank.min) / range) * 100));
+
+      document.getElementById('header-rank-pill').textContent = `${currentRank.title} • ${totalXp} XP`;
+      document.getElementById('rank-xp-detail').textContent = totalXp >= 2500
+        ? `${totalXp} XP • MAX RANK: ASAS & FITNESS MASTER!`
+        : `${totalXp} XP • Menuju ${currentRank.next} (${currentRank.max} XP)`;
+      document.getElementById('xp-progress-bar').style.width = `${progressPct}%`;
+    }
+
+    /**
+     * =========================================================================
+     * 6. TAB NAVIGATION & UI RENDERERS
+     * =========================================================================
+     */
+    function switchMainTab(tabName) {
+      activeMainTab = tabName;
+      const tabs = ['dashboard', 'asas', 'workout', 'minigame'];
+
+      tabs.forEach(t => {
+        const viewEl = document.getElementById(`view-${t}`);
+        const btnEl = document.getElementById(`nav-tab-${t}`);
+        if (t === tabName) {
+          viewEl.classList.remove('hidden');
+          btnEl.className = 'flex-1 min-w-[140px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 cursor-pointer';
+        } else {
+          viewEl.classList.add('hidden');
+          btnEl.className = 'flex-1 min-w-[140px] flex items-center justify-center gap-2 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-bold transition text-slate-400 hover:text-white hover:bg-slate-800/70 cursor-pointer';
+        }
+      });
+
+      if (tabName === 'minigame' && !document.getElementById('game-panel-smasher').classList.contains('hidden')) {
+        resizeSmasherCanvas();
+      }
+      lucide.createIcons();
+    }
+
+    function updateNaggingBannerUI() {
+      const banner = document.getElementById('nagging-banner');
+      const iconBox = document.getElementById('nag-icon-box');
+      const title = document.getElementById('nag-title');
+      const subtitle = document.getElementById('nag-subtitle');
+      const badge = document.getElementById('nag-progress-badge');
+      const countdownRow = document.getElementById('nag-countdown-row');
+
+      const stats = getTotalTasksStats();
+      const activeNag = isNaggingRequired();
+      badge.textContent = `${stats.done} / ${stats.total} Selesai`;
+
+      if (activeNag) {
+        banner.className = 'rounded-2xl p-4 sm:p-5 border transition-all duration-300 bg-rose-950/45 border-rose-500/60 shadow-lg shadow-rose-950/40';
+        iconBox.className = 'p-3 rounded-xl bg-rose-500/20 border border-rose-500/40 text-rose-400 shrink-0 mt-0.5';
+        iconBox.innerHTML = '<i data-lucide="siren" class="w-6 h-6 animate-bounce"></i>';
+
+        if (stats.done === 0) {
+          title.className = 'text-sm sm:text-lg font-extrabold text-rose-200 tracking-tight';
+          title.textContent = '⚠️ PERINGATAN ZIYAN: BELUM ADA SATUPUN TUGAS SELESAI HARI INI!';
+          subtitle.className = 'text-xs sm:text-sm text-rose-200/85 leading-relaxed';
+          subtitle.innerHTML = appState.nagMode === 'brutal'
+            ? 'Mode Brutal aktif! Alarm terus berbunyi sampai <strong class="text-white underline">SEMUA tugas ASAS & Workout</strong> hari ini tuntas!'
+            : 'Mesin pengingat akan terus berbunyi dan memunculkan pop-up sampai minimal <strong class="text-white underline">1 tugas belajar ASAS atau gerakan Workout</strong> kamu centang hari ini!';
+        } else {
+          title.className = 'text-sm sm:text-lg font-extrabold text-amber-200 tracking-tight';
+          title.textContent = `🔥 MODE BRUTAL AKTIF: Baru ${stats.done} dari ${stats.total} Tugas Selesai!`;
+          subtitle.className = 'text-xs sm:text-sm text-amber-200/85 leading-relaxed';
+          subtitle.innerHTML = `Selesaikan sisa <strong class="text-white">${stats.total - stats.done} tugas</strong> lagi agar alarm berhenti!`;
+        }
+        badge.className = 'px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-rose-500/25 text-rose-200 border border-rose-500/35';
+        countdownRow.classList.remove('hidden');
+      } else {
+        banner.className = 'rounded-2xl p-4 sm:p-5 border transition-all duration-300 bg-emerald-950/35 border-emerald-500/45 shadow-lg shadow-emerald-950/30';
+        iconBox.className = 'p-3 rounded-xl bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 shrink-0 mt-0.5';
+        iconBox.innerHTML = '<i data-lucide="shield-check" class="w-6 h-6"></i>';
+        title.className = 'text-sm sm:text-lg font-extrabold text-emerald-200 tracking-tight';
+        title.textContent = stats.done === stats.total
+          ? '🏆 GOKIL ZIYAN! SEMUA TARGET ASAS & WORKOUT HARI INI TUNTAS 100%!'
+          : '✅ AMAN! Target Minimal Hari Ini Terpenuhi — Alarm Spam Berhenti';
+        subtitle.className = 'text-xs sm:text-sm text-emerald-200/80 leading-relaxed';
+        subtitle.textContent = 'Terus lanjutkan checklist belajar ASAS dan gerakan workout untuk mengumpulkan XP lebih banyak!';
+        badge.className = 'px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+        countdownRow.classList.add('hidden');
+      }
+    }
+
+    function renderAll() {
+      renderDashboardSummaries();
+      renderWorkout30DayGrid();
+      renderOfficialAsasSchedule();
+      renderAsasChecklistAndRoadmap();
+      renderWorkoutProgram();
+      updateNaggingBannerUI();
+      calculateXPAndRank();
+      document.getElementById('quiz-high-score').textContent = appState.quizHighScore || 0;
+      document.getElementById('smasher-high-score').textContent = appState.smasherHighScore || 0;
+      lucide.createIcons();
+    }
+
+    function renderDashboardSummaries() {
+      const stats = getTotalTasksStats();
+      const totalPct = stats.total ? Math.round((stats.done / stats.total) * 100) : 0;
+
+      document.getElementById('dash-asas-stat').textContent = `${stats.asasDone} / ${stats.asasTotal} Selesai`;
+      document.getElementById('dash-workout-stat').textContent = `${stats.wkDone} / ${stats.wkTotal} Selesai`;
+      document.getElementById('dash-total-pct').textContent = `${totalPct}%`;
+      document.getElementById('dash-asas-box').textContent = `${stats.asasDone}/${stats.asasTotal}`;
+      document.getElementById('dash-workout-box').textContent = `${stats.wkDone}/${stats.wkTotal}`;
+      document.getElementById('dash-game-box').textContent = `${Math.max(appState.quizHighScore, appState.smasherHighScore)} pts`;
+      document.getElementById('dash-week-label').textContent = `Minggu ${appState.workoutWeek}`;
+
+      // Quick ASAS list on Dashboard
+      const quickAsas = document.getElementById('dash-quick-asas-list');
+      quickAsas.innerHTML = appState.asasTasks.slice(0, 4).map(t => `
+        <div onclick="toggleAsasTask('${t.id}')" class="p-2.5 rounded-xl border ${t.completed ? 'bg-slate-900/40 border-slate-800/60 opacity-70' : 'bg-slate-950/80 border-slate-800 hover:border-indigo-500/40'} flex items-center gap-3 cursor-pointer transition">
+          <div class="w-5 h-5 rounded-md border-2 ${t.completed ? 'bg-indigo-500 border-indigo-500 text-white' : 'border-slate-600 text-transparent'} flex items-center justify-center shrink-0">
+            <i data-lucide="check" class="w-3 h-3 stroke-[3]"></i>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="text-xs font-semibold ${t.completed ? 'line-through text-slate-500' : 'text-slate-100'} truncate">${escapeHTML(t.title)}</div>
+            <div class="text-[10px] text-indigo-300 font-mono">${escapeHTML(t.time)} • ${escapeHTML(t.subject)}</div>
+          </div>
+        </div>
+      `).join('');
+
+      // Quick Workout list on Dashboard (first 4 main items)
+      const quickWk = document.getElementById('dash-quick-workout-list');
+      quickWk.innerHTML = WORKOUT_MOVEMENTS.slice(0, 4).map(m => {
+        const done = appState.workoutCompletedIds.includes(m.id);
+        return `
+          <div onclick="toggleWorkoutMovement('${m.id}')" class="p-2.5 rounded-xl border ${done ? 'bg-slate-900/40 border-slate-800/60 opacity-70' : 'bg-slate-950/80 border-slate-800 hover:border-emerald-500/40'} flex items-center justify-between gap-2 cursor-pointer transition">
+            <div class="flex items-center gap-3 min-w-0">
+              <div class="w-5 h-5 rounded-md border-2 ${done ? 'bg-emerald-500 border-emerald-500 text-white' : 'border-slate-600 text-transparent'} flex items-center justify-center shrink-0">
+                <i data-lucide="check" class="w-3 h-3 stroke-[3]"></i>
+              </div>
+              <div class="min-w-0">
+                <div class="text-xs font-semibold ${done ? 'line-through text-slate-500' : 'text-slate-100'} truncate">${m.name}</div>
+                <div class="text-[10px] text-emerald-300 font-mono">${m.repsByWeek[appState.workoutWeek]}</div>
+              </div>
+            </div>
+            <span class="text-[10px] px-2 py-0.5 rounded bg-slate-900 text-slate-400 border border-slate-800 shrink-0">${m.timerSec}s</span>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderWorkout30DayGrid() {
+      const grid = document.getElementById('workout-30day-grid');
+      const todayIdx = getCurrentChallengeDayIndex();
+      const streakDays = appState.workout30Days.filter(Boolean).length;
+      const pct = Math.round((streakDays / 30) * 100);
+
+      document.getElementById('workout-streak-count').textContent = `${streakDays} / 30 Hari`;
+      document.getElementById('workout-month-pct').textContent = `${pct}%`;
+      document.getElementById('workout-month-bar').style.width = `${pct}%`;
+
+      grid.innerHTML = appState.workout30Days.map((done, idx) => {
+        const isToday = idx === todayIdx;
+        let cls = 'aspect-square rounded-lg text-[11px] font-mono font-extrabold flex items-center justify-center transition cursor-pointer select-none ';
+        if (done) {
+          cls += 'bg-emerald-500 text-slate-950 shadow-sm shadow-emerald-500/40 hover:bg-emerald-400';
+        } else if (isToday) {
+          cls += 'bg-slate-900 text-amber-300 border-2 border-amber-400 hover:bg-slate-800';
+        } else {
+          cls += 'bg-slate-950/90 text-slate-500 border border-slate-800 hover:border-slate-600 hover:text-slate-300';
+        }
+        return `<button type="button" onclick="toggleWorkoutStreakDay(${idx})" class="${cls}" title="Hari ke-${idx + 1}${isToday ? ' (Hari Ini)' : ''}">${idx + 1}</button>`;
+      }).join('');
+    }
+
+    function toggleWorkoutStreakDay(idx) {
+      ensureAudioContext();
+      appState.workout30Days[idx] = !appState.workout30Days[idx];
+      saveState();
+      renderAll();
+      if (appState.workout30Days[idx]) playSuccessChime();
+    }
+
+    /**
+     * =========================================================================
+     * 7. TAB 2 RENDERER: JADWAL RESMI ASAS X PPLG 1 & CHECKLIST
+     * =========================================================================
+     */
+    function renderOfficialAsasSchedule() {
+      const container = document.getElementById('official-asas-grid');
+      const accentMap = {
+        indigo: 'border-indigo-500/40 bg-indigo-500/10 text-indigo-300',
+        cyan: 'border-cyan-500/40 bg-cyan-500/10 text-cyan-300',
+        emerald: 'border-emerald-500/40 bg-emerald-500/10 text-emerald-300',
+        amber: 'border-amber-500/40 bg-amber-500/10 text-amber-300',
+        purple: 'border-purple-500/40 bg-purple-500/10 text-purple-300'
+      };
+
+      container.innerHTML = OFFICIAL_ASAS_SCHEDULE.map(dayObj => `
+        <div class="rounded-2xl bg-slate-950/85 border border-slate-800 p-3.5 flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex items-center justify-between gap-2 pb-2.5 border-b border-slate-800">
+              <span class="text-xs font-extrabold text-white">${dayObj.day}</span>
+              <span class="px-2 py-0.5 rounded text-[10px] font-mono font-bold border ${accentMap[dayObj.accent]}">${dayObj.badge}</span>
+            </div>
+
+            <div class="mt-2.5 space-y-2">
+              ${dayObj.slots.map(s => {
+                if (s.isBreak) {
+                  return `
+                    <div class="px-2.5 py-1.5 rounded-lg bg-slate-900/90 border border-dashed border-slate-700/80 text-center">
+                      <span class="font-mono text-[10px] text-amber-300 font-semibold">${s.jam}</span>
+                    </div>
+                  `;
+                }
+                if (s.isEmpty) {
+                  return `
+                    <div class="p-2.5 rounded-xl bg-slate-900/40 border border-slate-800/60 opacity-65">
+                      <div class="font-mono text-[10px] text-slate-400">${s.jam}</div>
+                      <div class="text-xs font-semibold text-slate-400 mt-0.5">${s.subject}</div>
+                    </div>
+                  `;
+                }
+                return `
+                  <div class="p-2.5 rounded-xl bg-slate-900/80 border border-slate-800 hover:border-slate-700 transition">
+                    <div class="font-mono text-[10px] font-bold text-cyan-400">${s.jam}</div>
+                    <div class="text-xs font-bold text-white mt-0.5 leading-snug">${s.subject}</div>
+                    <div class="text-[11px] text-slate-400 mt-1 flex items-center gap-1">
+                      <i data-lucide="user" class="w-3 h-3 text-slate-500 shrink-0"></i>
+                      <span class="truncate">${s.teacher}</span>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function renderAsasChecklistAndRoadmap() {
+      const listEl = document.getElementById('full-asas-task-list');
+      const doneCount = appState.asasTasks.filter(t => t.completed).length;
+      document.getElementById('asas-tab-badge').textContent = `${doneCount}/${appState.asasTasks.length}`;
+
+      listEl.innerHTML = appState.asasTasks.map(t => `
+        <div class="p-3 rounded-xl border ${t.completed ? 'bg-slate-900/40 border-slate-800/60 opacity-75' : 'bg-slate-950/80 border-slate-800 hover:border-indigo-500/40'} flex items-center justify-between gap-3 transition">
+          <div onclick="toggleAsasTask('${t.id}')" class="flex items-start sm:items-center gap-3 flex-1 min-w-0 cursor-pointer">
+            <button type="button" class="w-6 h-6 rounded-lg border-2 ${t.completed ? 'bg-indigo-500 border-indigo-500 text-white' : 'bg-slate-950 border-slate-600 text-transparent'} flex items-center justify-center shrink-0 mt-0.5 sm:mt-0 cursor-pointer">
+              <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+            </button>
+            <div class="min-w-0 flex-1">
+              <div class="flex flex-wrap items-center gap-1.5 mb-1">
+                <span class="font-mono text-[11px] font-bold px-2 py-0.5 rounded bg-slate-800 text-slate-200">${escapeHTML(t.time)}</span>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">${escapeHTML(t.subject)}</span>
+              </div>
+              <p class="text-xs sm:text-sm font-semibold ${t.completed ? 'line-through text-slate-500' : 'text-white'} break-words">${escapeHTML(t.title)}</p>
+            </div>
+          </div>
+          <button onclick="deleteAsasTask('${t.id}')" class="p-1.5 rounded-lg text-slate-400 hover:text-rose-400 hover:bg-slate-800 cursor-pointer" title="Hapus">
+            <i data-lucide="trash-2" class="w-4 h-4"></i>
+          </button>
+        </div>
+      `).join('');
+
+      const roadmapEl = document.getElementById('asas-roadmap-list');
+      roadmapEl.innerHTML = ASAS_ROADMAP_ITEMS.map(item => `
+        <div class="p-3 rounded-xl bg-slate-950/85 border border-slate-800 space-y-1">
+          <div class="flex items-center justify-between gap-2">
+            <span class="font-mono text-xs font-extrabold text-cyan-400">${item.dates}</span>
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-500/15 text-indigo-300 border border-indigo-500/25">${item.tag}</span>
+          </div>
+          <p class="text-xs text-slate-300 leading-relaxed">${item.focus}</p>
+        </div>
+      `).join('');
+    }
+
+    function toggleAsasTask(id) {
+      ensureAudioContext();
+      const idx = appState.asasTasks.findIndex(t => t.id === id);
+      if (idx === -1) return;
+      const wasNagging = isNaggingRequired();
+      appState.asasTasks[idx].completed = !appState.asasTasks[idx].completed;
+      saveState();
+      renderAll();
+
+      if (appState.asasTasks[idx].completed) {
+        playSuccessChime();
+        if (wasNagging && !isNaggingRequired()) {
+          showToast('Mantap Ziyan! +50 XP & Alarm spam hari ini berhenti!', 'success');
+        }
+      } else if (isNaggingRequired()) {
+        nagSecondsRemaining = Number(appState.nagIntervalSec) || 60;
+      }
+    }
+
+    function handleAddAsasTask(e) {
+      e.preventDefault();
+      const time = document.getElementById('new-asas-time').value.trim() || '20:00';
+      const title = document.getElementById('new-asas-title').value.trim();
+      const subject = document.getElementById('new-asas-subject').value;
+      if (!title) return;
+
+      appState.asasTasks.push({
+        id: 'asas-' + Date.now(),
+        time,
+        title,
+        subject,
+        completed: false
+      });
+      document.getElementById('new-asas-title').value = '';
+      saveState();
+      renderAll();
+      showToast('Target belajar ASAS ditambahkan!', 'success');
+    }
+
+    function deleteAsasTask(id) {
+      appState.asasTasks = appState.asasTasks.filter(t => t.id !== id);
+      saveState();
+      renderAll();
+      showToast('Tugas belajar dihapus.', 'info');
+    }
+
+    /**
+     * =========================================================================
+     * 8. TAB 3 RENDERER: PROGRAM WORKOUT 30 HARI & TIMER PER GERAKAN
+     * =========================================================================
+     */
+    function selectWorkoutWeek(weekNum) {
+      appState.workoutWeek = weekNum;
+      saveState();
+
+      [1, 2, 3, 4].forEach(w => {
+        const btn = document.getElementById(`wk-btn-${w}`);
+        if (w === weekNum) {
+          btn.className = 'p-3 rounded-xl border text-left transition cursor-pointer bg-emerald-500/15 border-emerald-500 text-white';
+        } else {
+          btn.className = 'p-3 rounded-xl border text-left transition cursor-pointer bg-slate-950/70 border-slate-800 text-slate-400 hover:border-slate-700';
+        }
+      });
+
+      renderAll();
+    }
+
+    function renderWorkoutProgram() {
+      const container = document.getElementById('workout-sections-container');
+      const phases = ['Pemanasan (Warm-Up)', 'Latihan Inti (Main Circuit)', 'Pendinginan (Cool-Down)'];
+
+      container.innerHTML = phases.map(phase => {
+        const items = WORKOUT_MOVEMENTS.filter(m => m.phase === phase);
+        return `
+          <div class="glass-card rounded-2xl p-5 space-y-3.5">
+            <div class="flex items-center justify-between border-b border-slate-800 pb-3">
+              <h3 class="text-base font-extrabold text-white flex items-center gap-2">
+                <i data-lucide="flame" class="w-4 h-4 text-emerald-400"></i>
+                ${phase}
+              </h3>
+              <span class="text-xs font-mono text-emerald-300 font-bold">Minggu ${appState.workoutWeek}</span>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3.5">
+              ${items.map(m => {
+                const done = appState.workoutCompletedIds.includes(m.id);
+                const repLabel = m.repsByWeek[appState.workoutWeek];
+                return `
+                  <div class="p-4 rounded-2xl border ${done ? 'bg-emerald-950/20 border-emerald-500/40' : 'bg-slate-950/85 border-slate-800 hover:border-slate-700'} flex flex-col justify-between gap-3 transition">
+                    <div class="space-y-2">
+                      <div class="flex items-start justify-between gap-2">
+                        <div onclick="toggleWorkoutMovement('${m.id}')" class="flex items-start gap-2.5 cursor-pointer">
+                          <button type="button" class="w-6 h-6 rounded-lg border-2 ${done ? 'bg-emerald-500 border-emerald-500 text-white' : 'bg-slate-900 border-slate-600 text-transparent'} flex items-center justify-center shrink-0 mt-0.5 cursor-pointer">
+                            <i data-lucide="check" class="w-3.5 h-3.5 stroke-[3]"></i>
+                          </button>
+                          <div>
+                            <h4 class="text-sm font-extrabold ${done ? 'line-through text-slate-400' : 'text-white'}">${m.name}</h4>
+                            <span class="inline-block mt-0.5 text-[11px] font-mono font-bold text-emerald-400">${repLabel}</span>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="text-[11px] font-semibold text-cyan-300 bg-cyan-500/10 border border-cyan-500/20 px-2 py-0.5 rounded-md inline-block">
+                        Target: ${m.muscle}
+                      </div>
+
+                      <p class="text-xs text-slate-400 leading-relaxed">
+                        ${m.instruction}
+                      </p>
+                    </div>
+
+                    <div class="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2">
+                      <button onclick="startMovementTimer('${m.name}', ${m.timerSec})" class="flex-1 inline-flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl bg-emerald-600/20 hover:bg-emerald-600/35 text-emerald-300 border border-emerald-500/35 text-xs font-bold transition cursor-pointer">
+                        <i data-lucide="timer" class="w-3.5 h-3.5"></i>
+                        <span>Mulai Timer (${m.timerSec}s)</span>
+                      </button>
+                      <button onclick="toggleWorkoutMovement('${m.id}')" class="px-3 py-2 rounded-xl text-xs font-bold ${done ? 'bg-emerald-500 text-slate-950' : 'bg-slate-800 text-slate-300 hover:bg-slate-700'} transition cursor-pointer">
+                        ${done ? 'Selesai ✓' : 'Centang'}
+                      </button>
+                    </div>
+                  </div>
+                `;
+              }).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleWorkoutMovement(moveId) {
+      ensureAudioContext();
+      const wasNagging = isNaggingRequired();
+      const exists = appState.workoutCompletedIds.includes(moveId);
+
+      if (exists) {
+        appState.workoutCompletedIds = appState.workoutCompletedIds.filter(id => id !== moveId);
+      } else {
+        appState.workoutCompletedIds.push(moveId);
+      }
+
+      // Sync today's 30-day workout streak automatically if >= 1 workout movement is completed
+      const todayIdx = getCurrentChallengeDayIndex();
+      appState.workout30Days[todayIdx] = appState.workoutCompletedIds.length > 0;
+
+      saveState();
+      renderAll();
+
+      if (!exists) {
+        playSuccessChime();
+        if (wasNagging && !isNaggingRequired()) {
+          showToast('Keren Ziyan! +40 XP & Streak 30 Hari menyala! Alarm berhenti!', 'success');
+        }
+      } else if (isNaggingRequired()) {
+        nagSecondsRemaining = Number(appState.nagIntervalSec) || 60;
+      }
+    }
+
+    // Active Movement Countdown Timer
+    function startMovementTimer(name, seconds) {
+      ensureAudioContext();
+      pauseExerciseTimer();
+      exTimerName = name;
+      exTimerDefault = seconds;
+      exTimerRemaining = seconds;
+      document.getElementById('ex-timer-name').textContent = name;
+      document.getElementById('ex-timer-clock').textContent = formatMMSS(seconds);
+      resumeExerciseTimer();
+      showToast(`Timer dimulai: ${name} (${seconds} detik)`, 'info');
+    }
+
+    function toggleExerciseTimer() {
+      ensureAudioContext();
+      if (exTimerRunning) {
+        pauseExerciseTimer();
+      } else {
+        if (exTimerRemaining <= 0) exTimerRemaining = exTimerDefault;
+        resumeExerciseTimer();
+      }
+    }
+
+    function resumeExerciseTimer() {
+      exTimerRunning = true;
+      document.getElementById('ex-timer-btn-text').textContent = 'Jeda';
+      exTimerInterval = setInterval(() => {
+        exTimerRemaining--;
+        document.getElementById('ex-timer-clock').textContent = formatMMSS(Math.max(0, exTimerRemaining));
+        if (exTimerRemaining <= 0) {
+          pauseExerciseTimer();
+          playSuccessChime();
+          setTimeout(playSuccessChime, 300);
+          showToast(`⏱️ Waktu ${exTimerName} Selesai! Mantap!`, 'success');
+        }
+      }, 1000);
+    }
+
+    function pauseExerciseTimer() {
+      exTimerRunning = false;
+      if (exTimerInterval) {
+        clearInterval(exTimerInterval);
+        exTimerInterval = null;
+      }
+      document.getElementById('ex-timer-btn-text').textContent = 'Mulai';
+    }
+
+    function resetExerciseTimer() {
+      pauseExerciseTimer();
+      exTimerRemaining = exTimerDefault;
+      document.getElementById('ex-timer-clock').textContent = formatMMSS(exTimerDefault);
+    }
+
+    // Pomodoro Study Timer (25m)
+    function formatMMSS(sec) {
+      return `${String(Math.floor(sec / 60)).padStart(2, '0')}:${String(sec % 60).padStart(2, '0')}`;
+    }
+
+    function togglePomodoroTimer() {
+      ensureAudioContext();
+      if (pomoRunning) {
+        pomoRunning = false;
+        clearInterval(pomoInterval);
+        document.getElementById('btn-pomo-toggle').textContent = 'Lanjut';
+      } else {
+        if (pomoSeconds <= 0) pomoSeconds = 1500;
+        pomoRunning = true;
+        document.getElementById('btn-pomo-toggle').textContent = 'Jeda';
+        pomoInterval = setInterval(() => {
+          pomoSeconds--;
+          document.getElementById('pomodoro-display').textContent = formatMMSS(Math.max(0, pomoSeconds));
+          if (pomoSeconds <= 0) {
+            pomoRunning = false;
+            clearInterval(pomoInterval);
+            document.getElementById('btn-pomo-toggle').textContent = 'Mulai';
+            playSuccessChime();
+            showToast('📚 Sesi Belajar Pomodoro 25 Menit Selesai!', 'success');
+          }
+        }, 1000);
+      }
+    }
+
+    function resetPomodoroTimer() {
+      pomoRunning = false;
+      clearInterval(pomoInterval);
+      pomoSeconds = 1500;
+      document.getElementById('pomodoro-display').textContent = '25:00';
+      document.getElementById('btn-pomo-toggle').textContent = 'Mulai';
+    }
+
+    /**
+     * =========================================================================
+     * 9. TAB 4: MINI-GAME ZONE (GAME 1: BRAIN BATTLE QUIZ)
+     * =========================================================================
+     */
+    let quizDeck = [];
+    let quizIndex = 0;
+    let quizScore = 0;
+    let quizCombo = 1;
+    let quizLives = 3;
+    let quizTimeLeft = 15;
+    let quizTimerHandle = null;
+    let quizLocked = false;
+
+    function switchGameSubTab(game) {
+      const pQuiz = document.getElementById('game-panel-quiz');
+      const pSmasher = document.getElementById('game-panel-smasher');
+      const bQuiz = document.getElementById('subtab-game-quiz');
+      const bSmasher = document.getElementById('subtab-game-smasher');
+
+      if (game === 'quiz') {
+        pQuiz.classList.remove('hidden');
+        pSmasher.classList.add('hidden');
+        bQuiz.className = 'px-3.5 py-2 rounded-lg text-xs font-bold bg-indigo-600 text-white transition cursor-pointer';
+        bSmasher.className = 'px-3.5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer';
+        stopSmasherLoop();
+      } else {
+        pQuiz.classList.add('hidden');
+        pSmasher.classList.remove('hidden');
+        bSmasher.className = 'px-3.5 py-2 rounded-lg text-xs font-bold bg-emerald-600 text-white transition cursor-pointer';
+        bQuiz.className = 'px-3.5 py-2 rounded-lg text-xs font-bold text-slate-400 hover:text-white transition cursor-pointer';
+        clearInterval(quizTimerHandle);
+        resizeSmasherCanvas();
+      }
+    }
+
+    function startQuizGame() {
+      ensureAudioContext();
+      quizDeck = [...QUIZ_QUESTIONS].sort(() => Math.random() - 0.5).slice(0, 10);
+      quizIndex = 0;
+      quizScore = 0;
+      quizCombo = 1;
+      quizLives = 3;
+
+      document.getElementById('quiz-start-screen').classList.add('hidden');
+      document.getElementById('quiz-end-screen').classList.add('hidden');
+      document.getElementById('quiz-play-screen').classList.remove('hidden');
+
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      if (quizLives <= 0 || quizIndex >= quizDeck.length) {
+        endQuizGame();
+        return;
+      }
+
+      quizLocked = false;
+      quizTimeLeft = 15;
+      const current = quizDeck[quizIndex];
+
+      document.getElementById('quiz-lives-display').textContent = '❤️'.repeat(quizLives) + '🖤'.repeat(3 - quizLives);
+      document.getElementById('quiz-combo-badge').textContent = `Combo x${quizCombo}`;
+      document.getElementById('quiz-q-num').textContent = quizIndex + 1;
+      document.getElementById('quiz-score-display').textContent = quizScore;
+      document.getElementById('quiz-subject-tag').textContent = current.subject;
+      document.getElementById('quiz-question-text').textContent = current.q;
+      document.getElementById('quiz-feedback-box').classList.add('hidden');
+
+      const optsGrid = document.getElementById('quiz-options-grid');
+      const letters = ['A', 'B', 'C', 'D'];
+      optsGrid.innerHTML = current.options.map((opt, i) => `
+        <button onclick="submitQuizAnswer(${i})" id="quiz-opt-${i}" class="p-3.5 rounded-xl bg-slate-950/90 hover:bg-slate-800 border border-slate-700 text-left text-xs sm:text-sm font-semibold text-slate-100 flex items-center gap-3 transition cursor-pointer">
+          <span class="w-7 h-7 rounded-lg bg-slate-800 text-indigo-300 font-mono font-bold flex items-center justify-center shrink-0">${letters[i]}</span>
+          <span>${escapeHTML(opt)}</span>
+        </button>
+      `).join('');
+
+      clearInterval(quizTimerHandle);
+      updateQuizTimerBar();
+      quizTimerHandle = setInterval(() => {
+        quizTimeLeft -= 0.2;
+        if (quizTimeLeft <= 0) {
+          quizTimeLeft = 0;
+          updateQuizTimerBar();
+          clearInterval(quizTimerHandle);
+          handleQuizTimeout();
+        } else {
+          updateQuizTimerBar();
+        }
+      }, 200);
+    }
+
+    function updateQuizTimerBar() {
+      const pct = Math.max(0, (quizTimeLeft / 15) * 100);
+      document.getElementById('quiz-timer-sec').textContent = Math.ceil(quizTimeLeft);
+      const bar = document.getElementById('quiz-timer-bar');
+      bar.style.width = `${pct}%`;
+      bar.className = quizTimeLeft <= 4
+        ? 'h-full bg-rose-500 transition-all duration-200'
+        : 'h-full bg-gradient-to-r from-cyan-400 to-indigo-500 transition-all duration-200';
+    }
+
+    function submitQuizAnswer(selectedIdx) {
+      if (quizLocked) return;
+      quizLocked = true;
+      clearInterval(quizTimerHandle);
+
+      const current = quizDeck[quizIndex];
+      const isCorrect = selectedIdx === current.answer;
+      const fb = document.getElementById('quiz-feedback-box');
+
+      document.getElementById(`quiz-opt-${current.answer}`).className = 'p-3.5 rounded-xl bg-emerald-950/80 border-2 border-emerald-500 text-left text-xs sm:text-sm font-bold text-emerald-200 flex items-center gap-3';
+
+      if (isCorrect) {
+        const gained = Math.round((100 + quizTimeLeft * 5) * quizCombo);
+        quizScore += gained;
+        quizCombo++;
+        playSuccessChime();
+        fb.className = 'p-3.5 rounded-xl border bg-emerald-950/50 border-emerald-500/40 text-emerald-200 text-xs leading-relaxed';
+        fb.innerHTML = `✅ <strong>BENAR! (+${gained} pts)</strong> — ${escapeHTML(current.exp)}`;
+      } else {
+        document.getElementById(`quiz-opt-${selectedIdx}`).className = 'p-3.5 rounded-xl bg-rose-950/80 border-2 border-rose-500 text-left text-xs sm:text-sm font-bold text-rose-200 flex items-center gap-3';
+        quizLives--;
+        quizCombo = 1;
+        playErrorBuzz();
+        fb.className = 'p-3.5 rounded-xl border bg-rose-950/50 border-rose-500/40 text-rose-200 text-xs leading-relaxed';
+        fb.innerHTML = `❌ <strong>KURANG TEPAT!</strong> — ${escapeHTML(current.exp)}`;
+      }
+
+      fb.classList.remove('hidden');
+      document.getElementById('quiz-score-display').textContent = quizScore;
+      document.getElementById('quiz-lives-display').textContent = '❤️'.repeat(Math.max(0, quizLives)) + '🖤'.repeat(3 - Math.max(0, quizLives));
+
+      setTimeout(() => {
+        quizIndex++;
+        renderQuizQuestion();
+      }, 1800);
+    }
+
+    function handleQuizTimeout() {
+      if (quizLocked) return;
+      quizLocked = true;
+      const current = quizDeck[quizIndex];
+      quizLives--;
+      quizCombo = 1;
+      playErrorBuzz();
+
+      document.getElementById(`quiz-opt-${current.answer}`).className = 'p-3.5 rounded-xl bg-emerald-950/80 border-2 border-emerald-500 text-left text-xs sm:text-sm font-bold text-emerald-200 flex items-center gap-3';
+      const fb = document.getElementById('quiz-feedback-box');
+      fb.className = 'p-3.5 rounded-xl border bg-rose-950/50 border-rose-500/40 text-rose-200 text-xs leading-relaxed';
+      fb.innerHTML = `⏱️ <strong>WAKTU HABIS!</strong> — ${escapeHTML(current.exp)}`;
+      fb.classList.remove('hidden');
+
+      setTimeout(() => {
+        quizIndex++;
+        renderQuizQuestion();
+      }, 1800);
+    }
+
+    function endQuizGame() {
+      clearInterval(quizTimerHandle);
+      document.getElementById('quiz-play-screen').classList.add('hidden');
+      document.getElementById('quiz-end-screen').classList.remove('hidden');
+
+      const earnedXp = Math.max(10, Math.round(quizScore / 15));
+      appState.bonusXp = (appState.bonusXp || 0) + earnedXp;
+      if (quizScore > (appState.quizHighScore || 0)) {
+        appState.quizHighScore = quizScore;
+      }
+      saveState();
+      renderAll();
+
+      document.getElementById('quiz-final-score').textContent = quizScore;
+      document.getElementById('quiz-earned-xp').textContent = `+${earnedXp} XP`;
+    }
+
+    /**
+     * =========================================================================
+     * 10. TAB 4: MINI-GAME 2 (BUG SMASHER & FOCUS REFLEX CANVAS ARCADE)
+     * =========================================================================
+     */
+    let smasherRunning = false;
+    let smasherScore = 0;
+    let smasherCombo = 1;
+    let smasherTimeLeft = 30.0;
+    let smasherEntities = [];
+    let smasherParticles = [];
+    let smasherFloatTexts = [];
+    let smasherLastTime = 0;
+    let smasherSpawnTimer = 0;
+    let smasherAnimId = null;
+
+    function resizeSmasherCanvas() {
+      const wrapper = document.getElementById('smasher-canvas-wrapper');
+      const canvas = document.getElementById('smasher-canvas');
+      if (!wrapper || !canvas) return;
+      canvas.width = wrapper.clientWidth || 600;
+      canvas.height = wrapper.clientHeight || 360;
+    }
+
+    function stopSmasherLoop() {
+      smasherRunning = false;
+      if (smasherAnimId) {
+        cancelAnimationFrame(smasherAnimId);
+        smasherAnimId = null;
+      }
+    }
+
+    function startSmasherGame() {
+      ensureAudioContext();
+      resizeSmasherCanvas();
+      stopSmasherLoop();
+
+      smasherScore = 0;
+      smasherCombo = 1;
+      smasherTimeLeft = 30.0;
+      smasherEntities = [];
+      smasherParticles = [];
+      smasherFloatTexts = [];
+      smasherSpawnTimer = 0;
+      smasherRunning = true;
+      smasherLastTime = performance.now();
+
+      document.getElementById('smasher-overlay').classList.add('hidden');
+      document.getElementById('smasher-score').textContent = '0';
+      document.getElementById('smasher-combo').textContent = 'Combo x1';
+
+      spawnSmasherEntity();
+      spawnSmasherEntity();
+      smasherAnimId = requestAnimationFrame(smasherGameLoop);
+    }
+
+    function spawnSmasherEntity() {
+      const canvas = document.getElementById('smasher-canvas');
+      const w = canvas.width || 600;
+      const h = canvas.height || 360;
+      const radius = 28;
+      const roll = Math.random();
+
+      // 60% Bug Kode (🐛), 20% Energi Fokus (⚡), 20% Virus Merah (👾)
+      let type = 'bug';
+      let emoji = '🐛';
+      let color = '#10b981';
+      let life = 1.65;
+
+      if (roll > 0.80) {
+        type = 'virus';
+        emoji = '👾';
+        color = '#f43f5e';
+        life = 1.85;
+      } else if (roll > 0.60) {
+        type = 'energy';
+        emoji = '⚡';
+        color = '#22d3ee';
+        life = 1.35;
+      }
+
+      smasherEntities.push({
+        x: radius + 16 + Math.random() * Math.max(40, w - (radius + 16) * 2),
+        y: radius + 16 + Math.random() * Math.max(40, h - (radius + 16) * 2),
+        r: radius,
+        type,
+        emoji,
+        color,
+        life,
+        maxLife: life,
+        vx: (Math.random() - 0.5) * 75,
+        vy: (Math.random() - 0.5) * 75
+      });
+    }
+
+    function smasherGameLoop(now) {
+      if (!smasherRunning) return;
+      const dt = Math.min(0.05, (now - smasherLastTime) / 1000);
+      smasherLastTime = now;
+
+      smasherTimeLeft -= dt;
+      if (smasherTimeLeft <= 0) {
+        smasherTimeLeft = 0;
+        document.getElementById('smasher-time').textContent = '0.0';
+        finishSmasherGame();
+        return;
+      }
+      document.getElementById('smasher-time').textContent = smasherTimeLeft.toFixed(1);
+
+      // Spawn logic
+      smasherSpawnTimer -= dt;
+      if (smasherSpawnTimer <= 0) {
+        spawnSmasherEntity();
+        smasherSpawnTimer = Math.max(0.32, 0.68 - (30 - smasherTimeLeft) * 0.01);
+      }
+
+      const canvas = document.getElementById('smasher-canvas');
+      const ctx = canvas.getContext('2d');
+      const w = canvas.width;
+      const h = canvas.height;
+
+      // Clear background
+      ctx.fillStyle = '#020617';
+      ctx.fillRect(0, 0, w, h);
+
+      // Draw subtle cyber grid inside canvas
+      ctx.strokeStyle = 'rgba(99, 102, 241, 0.09)';
+      ctx.lineWidth = 1;
+      for (let gx = 0; gx < w; gx += 32) {
+        ctx.beginPath(); ctx.moveTo(gx, 0); ctx.lineTo(gx, h); ctx.stroke();
+      }
+      for (let gy = 0; gy < h; gy += 32) {
+        ctx.beginPath(); ctx.moveTo(0, gy); ctx.lineTo(w, gy); ctx.stroke();
+      }
+
+      // Update & draw entities
+      for (let i = smasherEntities.length - 1; i >= 0; i--) {
+        const ent = smasherEntities[i];
+        ent.life -= dt;
+        ent.x += ent.vx * dt;
+        ent.y += ent.vy * dt;
+
+        if (ent.x < ent.r + 8 || ent.x > w - ent.r - 8) ent.vx *= -1;
+        if (ent.y < ent.r + 8 || ent.y > h - ent.r - 8) ent.vy *= -1;
+
+        if (ent.life <= 0) {
+          smasherEntities.splice(i, 1);
+          continue;
+        }
+
+        const ratio = ent.life / ent.maxLife;
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(ent.x, ent.y, ent.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(15, 23, 42, 0.92)';
+        ctx.fill();
+        ctx.lineWidth = 3;
+        ctx.strokeStyle = ent.color;
+        ctx.stroke();
+
+        // Timer ring arc
+        ctx.beginPath();
+        ctx.arc(ent.x, ent.y, ent.r + 4, -Math.PI / 2, -Math.PI / 2 + Math.PI * 2 * ratio);
+        ctx.lineWidth = 2;
+        ctx.strokeStyle = 'rgba(255,255,255,0.45)';
+        ctx.stroke();
+
+        ctx.font = '26px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText(ent.emoji, ent.x, ent.y + 1);
+        ctx.restore();
+      }
+
+      // Update & draw particles
+      for (let i = smasherParticles.length - 1; i >= 0; i--) {
+        const p = smasherParticles[i];
+        p.life -= dt;
+        p.x += p.vx * dt;
+        p.y += p.vy * dt;
+        if (p.life <= 0) {
+          smasherParticles.splice(i, 1);
+          continue;
+        }
+        ctx.fillStyle = p.color;
+        ctx.globalAlpha = Math.max(0, p.life * 2);
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+      }
+
+      // Update & draw floating score popups
+      for (let i = smasherFloatTexts.length - 1; i >= 0; i--) {
+        const ft = smasherFloatTexts[i];
+        ft.life -= dt;
+        ft.y -= 36 * dt;
+        if (ft.life <= 0) {
+          smasherFloatTexts.splice(i, 1);
+          continue;
+        }
+        ctx.font = 'bold 14px "JetBrains Mono", monospace';
+        ctx.fillStyle = ft.color;
+        ctx.textAlign = 'center';
+        ctx.fillText(ft.text, ft.x, ft.y);
+      }
+
+      smasherAnimId = requestAnimationFrame(smasherGameLoop);
+    }
+
+    function handleSmasherPointer(clientX, clientY) {
+      if (!smasherRunning) return;
+      const canvas = document.getElementById('smasher-canvas');
+      const rect = canvas.getBoundingClientRect();
+      const x = clientX - rect.left;
+      const y = clientY - rect.top;
+
+      for (let i = smasherEntities.length - 1; i >= 0; i--) {
+        const ent = smasherEntities[i];
+        const dist = Math.hypot(x - ent.x, y - ent.y);
+        if (dist <= ent.r + 10) {
+          smasherEntities.splice(i, 1);
+
+          // Spawn burst particles
+          for (let k = 0; k < 10; k++) {
+            const ang = (Math.PI * 2 * k) / 10;
+            smasherParticles.push({
+              x: ent.x,
+              y: ent.y,
+              vx: Math.cos(ang) * (80 + Math.random() * 80),
+              vy: Math.sin(ang) * (80 + Math.random() * 80),
+              color: ent.color,
+              life: 0.45
+            });
+          }
+
+          if (ent.type === 'bug') {
+            const pts = 100 * smasherCombo;
+            smasherScore += pts;
+            smasherCombo = Math.min(5, smasherCombo + 1);
+            playTone(740, 0, 0.09, 'triangle', 0.18);
+            smasherFloatTexts.push({ x: ent.x, y: ent.y, text: `+${pts}`, color: '#34d399', life: 0.7 });
+          } else if (ent.type === 'energy') {
+            const pts = 200 * smasherCombo;
+            smasherScore += pts;
+            smasherTimeLeft = Math.min(35, smasherTimeLeft + 2.0);
+            smasherCombo = Math.min(5, smasherCombo + 1);
+            playSuccessChime();
+            smasherFloatTexts.push({ x: ent.x, y: ent.y, text: `+${pts} & +2s!`, color: '#22d3ee', life: 0.8 });
+          } else if (ent.type === 'virus') {
+            smasherScore = Math.max(0, smasherScore - 150);
+            smasherTimeLeft = Math.max(0, smasherTimeLeft - 2.0);
+            smasherCombo = 1;
+            playErrorBuzz();
+            smasherFloatTexts.push({ x: ent.x, y: ent.y, text: `-150 & -2s!`, color: '#fb7185', life: 0.8 });
+          }
+
+          document.getElementById('smasher-score').textContent = smasherScore;
+          document.getElementById('smasher-combo').textContent = `Combo x${smasherCombo}`;
+          break;
+        }
+      }
+    }
+
+    function finishSmasherGame() {
+      stopSmasherLoop();
+      const earnedXp = Math.max(10, Math.round(smasherScore / 40));
+      appState.bonusXp = (appState.bonusXp || 0) + earnedXp;
+      if (smasherScore > (appState.smasherHighScore || 0)) {
+        appState.smasherHighScore = smasherScore;
+      }
+      saveState();
+      renderAll();
+
+      const overlay = document.getElementById('smasher-overlay');
+      document.getElementById('smasher-overlay-title').textContent = `Waktu Habis! Skor: ${smasherScore}`;
+      document.getElementById('smasher-overlay-desc').textContent = `Kamu mendapatkan +${earnedXp} XP untuk PPLG1 GRIND OS!`;
+      overlay.classList.remove('hidden');
+    }
+
+    /**
+     * =========================================================================
+     * 11. DATE EDITOR, HELPERS & INITIALIZATION
+     * =========================================================================
+     */
+    function toggleAsasDateEditor() {
+      const ed = document.getElementById('asas-date-editor');
+      const inp = document.getElementById('asas-date-input');
+      ed.classList.toggle('hidden');
+      if (!ed.classList.contains('hidden')) {
+        const dt = new Date(appState.asasTargetDate);
+        inp.value = new Date(dt.getTime() - dt.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+      }
+    }
+
+    function saveAsasTargetDate() {
+      const val = document.getElementById('asas-date-input').value;
+      if (!val) return;
+      const dt = new Date(val);
+      if (isNaN(dt.getTime())) return;
+      appState.asasTargetDate = dt.toISOString();
+      saveState();
+      updateAsasTargetLabel();
+      document.getElementById('asas-date-editor').classList.add('hidden');
+      showToast('Target waktu ASAS diperbarui!', 'success');
+    }
+
+    function updateAsasTargetLabel() {
+      const dt = new Date(appState.asasTargetDate);
+      const dayName = HARI_ID[dt.getDay()];
+      const hh = String(dt.getHours()).padStart(2, '0');
+      const mm = String(dt.getMinutes()).padStart(2, '0');
+      document.getElementById('asas-target-label').textContent = `${dayName}, ${dt.getDate()} ${BULAN_ID[dt.getMonth()].slice(0, 3)} ${dt.getFullYear()} • ${hh}:${mm} WIB`;
+    }
+
+    function closeCustomModal() {
+      const bd = document.getElementById('custom-modal-backdrop');
+      bd.classList.add('hidden');
+      bd.classList.remove('flex');
+    }
+
+    function escapeHTML(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      loadState();
+
+      document.getElementById('nag-interval-select').value = String(appState.nagIntervalSec);
+      document.getElementById('nag-mode-select').value = appState.nagMode;
+
+      // Sync workout week selector UI
+      selectWorkoutWeek(appState.workoutWeek || 1);
+
+      updateAsasTargetLabel();
+      syncMuteUI();
+      updateNotificationPermissionUI();
+      renderAll();
+
+      // Canvas pointer listeners for Bug Smasher
+      const canvas = document.getElementById('smasher-canvas');
+      canvas.addEventListener('mousedown', (e) => handleSmasherPointer(e.clientX, e.clientY));
+      canvas.addEventListener('touchstart', (e) => {
+        if (e.touches.length > 0) {
+          e.preventDefault();
+          handleSmasherPointer(e.touches[0].clientX, e.touches[0].clientY);
+        }
+      }, { passive: false });
+
+      window.addEventListener('resize', () => {
+        if (activeMainTab === 'minigame') resizeSmasherCanvas();
+      });
+
+      // Start 1-second real-time clock & nagging loop
+      tickRealTimeEngine();
+      setInterval(tickRealTimeEngine, 1000);
+    });
+  </script>
+</body>
+</html>

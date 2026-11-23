@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
 
       - name: Setup Java
@@ -25,15 +25,9 @@ jobs:
           distribution: temurin
           java-version: '17'
 
-      - name: Install Android SDK packages
+      - name: Install Android SDK
         run: |
-          SDKMANAGER="$ANDROID_HOME/cmdline-tools/16.0/bin/sdkmanager"
-
-          if [ ! -f "$SDKMANAGER" ]; then
-            echo "sdkmanager tidak ditemukan"
-            find "$ANDROID_HOME/cmdline-tools" -name sdkmanager
-            exit 1
-          fi
+          SDKMANAGER="$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager"
 
           yes | "$SDKMANAGER" --licenses || true
 
@@ -56,7 +50,7 @@ jobs:
           PROJECT_DIR=$(find source -type f \( -name settings.gradle -o -name settings.gradle.kts \) | head -n 1 | xargs dirname)
 
           if [ -z "$PROJECT_DIR" ]; then
-            echo "File Gradle tidak ditemukan"
+            echo "Gradle project tidak ditemukan"
             exit 1
           fi
 
